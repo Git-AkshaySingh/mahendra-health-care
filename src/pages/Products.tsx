@@ -4,16 +4,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, ShoppingCart } from "lucide-react";
+import { Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -43,12 +43,6 @@ const Products = () => {
     },
   });
 
-  const handleAddToCart = (medicineName: string) => {
-    toast({
-      title: "Added to Cart",
-      description: `${medicineName} has been added to your cart`,
-    });
-  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -102,7 +96,11 @@ const Products = () => {
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {medicines?.map((medicine) => (
-                <Card key={medicine.id} className="overflow-hidden transition-all hover:shadow-lg">
+                <Card 
+                  key={medicine.id} 
+                  className="overflow-hidden transition-all hover:shadow-lg cursor-pointer"
+                  onClick={() => navigate(`/product/${medicine.id}`)}
+                >
                   <div className="h-48 bg-muted flex items-center justify-center">
                     {medicine.image_url ? (
                       <img
@@ -133,11 +131,13 @@ const Products = () => {
                   <CardFooter>
                     <Button
                       className="w-full"
-                      onClick={() => handleAddToCart(medicine.name)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/product/${medicine.id}`);
+                      }}
                       disabled={medicine.stock_quantity === 0}
                     >
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      {medicine.stock_quantity === 0 ? "Out of Stock" : "Add to Cart"}
+                      {medicine.stock_quantity === 0 ? "Out of Stock" : "View Details"}
                     </Button>
                   </CardFooter>
                 </Card>

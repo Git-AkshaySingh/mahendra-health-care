@@ -7,7 +7,7 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
-            <h3 className="mb-4 text-lg font-semibold">MediCare Pharmacy</h3>
+            <h3 className="mb-4 text-lg font-semibold">Mahendra Health Care</h3>
             <p className="text-sm text-muted-foreground">
               Your trusted online pharmacy for quality medicines and healthcare products.
             </p>
@@ -63,7 +63,7 @@ export const Footer = () => {
         </div>
 
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} MediCare Pharmacy. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Mahendra Health Care. All rights reserved.</p>
         </div>
       </div>
     </footer>

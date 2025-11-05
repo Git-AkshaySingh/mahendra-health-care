@@ -35,7 +35,7 @@ export const AdminSidebar = () => {
   };
 
   return (
-    <Sidebar className={state === "collapsed" ? "w-14" : "w-60"} collapsible>
+    <Sidebar className={state === "collapsed" ? "w-14" : "w-60"}>
       <div className="flex items-center justify-between border-b p-4">
         {state !== "collapsed" && <span className="text-lg font-bold">Admin Panel</span>}
         <SidebarTrigger />

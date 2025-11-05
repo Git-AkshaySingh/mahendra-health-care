@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, User, Menu, X } from "lucide-react";
+import { User, Menu, X } from "lucide-react";
+import { CartSheet } from "@/components/CartSheet";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -47,7 +48,7 @@ export const Navbar = () => {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
             <span className="text-2xl font-bold text-primary-foreground">+</span>
           </div>
-          <span className="text-xl font-bold text-primary">MediCare Pharmacy</span>
+          <span className="text-xl font-bold text-primary">Mahendra Health Care</span>
         </Link>
 
         <div className="hidden items-center space-x-6 md:flex">
@@ -63,9 +64,9 @@ export const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="icon" className="hidden md:flex">
-            <ShoppingCart className="h-5 w-5" />
-          </Button>
+          <div className="hidden md:flex">
+            <CartSheet />
+          </div>
 
           {user ? (
             <>
