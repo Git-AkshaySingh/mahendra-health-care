@@ -100,7 +100,7 @@ const ProductDetail = () => {
       const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('medicine-images')
+        .from('prescriptions')
         .upload(fileName, prescriptionFile);
 
       if (uploadError) throw uploadError;
