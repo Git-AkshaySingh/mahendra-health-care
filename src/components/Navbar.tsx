@@ -44,11 +44,9 @@ export const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="flex items-center space-x-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
-            <span className="text-2xl font-bold text-primary-foreground">+</span>
-          </div>
-          <span className="text-xl font-bold text-primary">Mahendra Health Care</span>
+        <Link to="/" className="flex items-center space-x-3">
+          <img src="/src/assets/logo.png" alt="Mahendra Health Care" className="h-12 w-auto" />
+          <span className="text-xl font-bold text-primary hidden sm:inline-block">Mahendra Health Care</span>
         </Link>
 
         <div className="hidden items-center space-x-6 md:flex">

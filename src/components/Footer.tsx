@@ -7,7 +7,10 @@ export const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
-            <h3 className="mb-4 text-lg font-semibold">Mahendra Health Care</h3>
+            <div className="flex items-center space-x-2 mb-4">
+              <img src="/src/assets/logo.png" alt="Mahendra Health Care" className="h-10 w-auto" />
+              <h3 className="text-lg font-semibold">Mahendra Health Care</h3>
+            </div>
             <p className="text-sm text-muted-foreground">
               Your trusted online pharmacy for quality medicines and healthcare products.
             </p>
