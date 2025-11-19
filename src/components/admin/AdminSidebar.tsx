@@ -37,7 +37,15 @@ export const AdminSidebar = () => {
   return (
     <Sidebar className={state === "collapsed" ? "w-14" : "w-60"}>
       <div className="flex items-center justify-between border-b p-4">
-        {state !== "collapsed" && <span className="text-lg font-bold">Admin Panel</span>}
+        {state !== "collapsed" && (
+          <div className="flex items-center space-x-2">
+            <img src="/src/assets/logo-mhc.png" alt="MHC" className="h-6 w-auto" />
+            <span className="text-lg font-bold">Admin</span>
+          </div>
+        )}
+        {state === "collapsed" && (
+          <img src="/src/assets/logo-mhc.png" alt="MHC" className="h-6 w-auto mx-auto" />
+        )}
         <SidebarTrigger />
       </div>
 
