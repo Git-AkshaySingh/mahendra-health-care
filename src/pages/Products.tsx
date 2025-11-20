@@ -2,6 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search } from "lucide-react";
@@ -24,13 +25,13 @@ const Products = () => {
     },
   });
 
-  const { data: medicines, isLoading } = useQuery({
-    queryKey: ["medicines", selectedCategory, searchTerm],
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["products", selectedCategory, searchTerm],
     queryFn: async () => {
-      let query = supabase.from("medicines").select("*, categories(name)");
+      let query = supabase.from("products").select("*");
 
       if (selectedCategory !== "all") {
-        query = query.eq("category_id", selectedCategory);
+        query = query.eq("category", selectedCategory);
       }
 
       if (searchTerm) {
@@ -74,7 +75,7 @@ const Products = () => {
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
                 {categories?.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
+                  <SelectItem key={category.id} value={category.name}>
                     {category.name}
                   </SelectItem>
                 ))}
@@ -95,17 +96,17 @@ const Products = () => {
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {medicines?.map((medicine) => (
+              {products?.map((product) => (
                 <Card 
-                  key={medicine.id} 
+                  key={product.id} 
                   className="overflow-hidden transition-all hover:shadow-lg cursor-pointer"
-                  onClick={() => navigate(`/product/${medicine.id}`)}
+                  onClick={() => navigate(`/product/${product.id}`)}
                 >
                   <div className="h-48 bg-muted flex items-center justify-center">
-                    {medicine.image_url ? (
+                    {product.image_url ? (
                       <img
-                        src={medicine.image_url}
-                        alt={medicine.name}
+                        src={product.image_url}
+                        alt={product.name}
                         className="h-full w-full object-cover"
                       />
                     ) : (
@@ -113,18 +114,23 @@ const Products = () => {
                     )}
                   </div>
                   <CardHeader>
-                    <CardTitle className="line-clamp-1">{medicine.name}</CardTitle>
+                    <CardTitle className="line-clamp-1">{product.name}</CardTitle>
                     <CardDescription className="line-clamp-2">
-                      {medicine.description || "No description available"}
+                      {product.description || "No description available"}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center justify-between">
-                      <span className="text-2xl font-bold text-primary">
-                        ${medicine.price}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl font-bold text-primary">
+                          ₹{product.price}
+                        </span>
+                        {product.discount_percent > 0 && (
+                          <Badge variant="secondary">{product.discount_percent}% OFF</Badge>
+                        )}
+                      </div>
                       <span className="text-sm text-muted-foreground">
-                        Stock: {medicine.stock_quantity}
+                        Stock: {product.stock_quantity}
                       </span>
                     </div>
                   </CardContent>
@@ -133,11 +139,11 @@ const Products = () => {
                       className="w-full"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/product/${medicine.id}`);
+                        navigate(`/product/${product.id}`);
                       }}
-                      disabled={medicine.stock_quantity === 0}
+                      disabled={product.stock_quantity === 0}
                     >
-                      {medicine.stock_quantity === 0 ? "Out of Stock" : "View Details"}
+                      {product.stock_quantity === 0 ? "Out of Stock" : "View Details"}
                     </Button>
                   </CardFooter>
                 </Card>
@@ -145,7 +151,7 @@ const Products = () => {
             </div>
           )}
 
-          {!isLoading && medicines?.length === 0 && (
+          {!isLoading && products?.length === 0 && (
             <div className="py-12 text-center">
               <p className="text-muted-foreground">No products found</p>
             </div>

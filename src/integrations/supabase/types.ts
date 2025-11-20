@@ -88,6 +88,42 @@ export type Database = {
         }
         Relationships: []
       }
+      customers: {
+        Row: {
+          address: string | null
+          age: number | null
+          alternate_phone: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          age?: number | null
+          alternate_phone?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          age?: number | null
+          alternate_phone?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       medicines: {
         Row: {
           active_ingredients: string | null
@@ -146,6 +182,178 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      order_items: {
+        Row: {
+          discount_at_purchase: number | null
+          id: string
+          order_id: string | null
+          price_at_purchase: number | null
+          product_id: string | null
+          quantity: number
+        }
+        Insert: {
+          discount_at_purchase?: number | null
+          id?: string
+          order_id?: string | null
+          price_at_purchase?: number | null
+          product_id?: string | null
+          quantity?: number
+        }
+        Update: {
+          discount_at_purchase?: number | null
+          id?: string
+          order_id?: string | null
+          price_at_purchase?: number | null
+          product_id?: string | null
+          quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          created_at: string | null
+          customer_id: string | null
+          id: string
+          payment_method: string | null
+          payment_status: string | null
+          prescription_url: string | null
+          status: string | null
+          total_amount: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          customer_id?: string | null
+          id?: string
+          payment_method?: string | null
+          payment_status?: string | null
+          prescription_url?: string | null
+          status?: string | null
+          total_amount?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          customer_id?: string | null
+          id?: string
+          payment_method?: string | null
+          payment_status?: string | null
+          prescription_url?: string | null
+          status?: string | null
+          total_amount?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prescriptions: {
+        Row: {
+          customer_id: string | null
+          file_url: string | null
+          id: string
+          uploaded_at: string | null
+        }
+        Insert: {
+          customer_id?: string | null
+          file_url?: string | null
+          id?: string
+          uploaded_at?: string | null
+        }
+        Update: {
+          customer_id?: string | null
+          file_url?: string | null
+          id?: string
+          uploaded_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prescriptions_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          discount_percent: number | null
+          dosage: string | null
+          id: string
+          image_url: string | null
+          manufacturer: string | null
+          name: string
+          price: number
+          qr_code_url: string | null
+          side_effects: string | null
+          stock_quantity: number
+          updated_at: string | null
+          usage_instructions: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          discount_percent?: number | null
+          dosage?: string | null
+          id?: string
+          image_url?: string | null
+          manufacturer?: string | null
+          name: string
+          price?: number
+          qr_code_url?: string | null
+          side_effects?: string | null
+          stock_quantity?: number
+          updated_at?: string | null
+          usage_instructions?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          discount_percent?: number | null
+          dosage?: string | null
+          id?: string
+          image_url?: string | null
+          manufacturer?: string | null
+          name?: string
+          price?: number
+          qr_code_url?: string | null
+          side_effects?: string | null
+          stock_quantity?: number
+          updated_at?: string | null
+          usage_instructions?: string | null
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
