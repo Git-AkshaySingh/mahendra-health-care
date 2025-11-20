@@ -36,12 +36,12 @@ const ProductDetail = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const { data: medicine, isLoading } = useQuery({
-    queryKey: ["medicine", id],
+  const { data: product, isLoading } = useQuery({
+    queryKey: ["product", id],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("medicines")
-        .select("*, categories(name)")
+        .from("products")
+        .select("*")
         .eq("id", id)
         .single();
       if (error) throw error;
@@ -50,20 +50,20 @@ const ProductDetail = () => {
   });
 
   const handleAddToCart = () => {
-    if (!medicine) return;
+    if (!product) return;
     
     for (let i = 0; i < quantity; i++) {
       addToCart({
-        id: medicine.id,
-        name: medicine.name,
-        price: Number(medicine.price),
-        image_url: medicine.image_url,
+        id: product.id,
+        name: product.name,
+        price: Number(product.price),
+        image_url: product.image_url,
       });
     }
 
     toast({
       title: "Added to Cart",
-      description: `${quantity} x ${medicine.name} added to cart`,
+      description: `${quantity} x ${product.name} added to cart`,
     });
   };
 
@@ -133,7 +133,7 @@ const ProductDetail = () => {
     );
   }
 
-  if (!medicine) {
+  if (!product) {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
@@ -166,10 +166,10 @@ const ProductDetail = () => {
           <div className="grid gap-8 md:grid-cols-2">
             <div className="space-y-4">
               <div className="aspect-square bg-muted rounded-lg overflow-hidden">
-                {medicine.image_url ? (
+                {product.image_url ? (
                   <img
-                    src={medicine.image_url}
-                    alt={medicine.name}
+                    src={product.image_url}
+                    alt={product.name}
                     className="h-full w-full object-cover"
                   />
                 ) : (
@@ -183,18 +183,18 @@ const ProductDetail = () => {
             <div className="space-y-6">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <h1 className="text-4xl font-bold">{medicine.name}</h1>
-                  {medicine.requires_prescription && (
-                    <Badge variant="destructive">Prescription Required</Badge>
+                  <h1 className="text-4xl font-bold">{product.name}</h1>
+                  {product.discount_percent > 0 && (
+                    <Badge variant="secondary">{product.discount_percent}% OFF</Badge>
                   )}
                 </div>
                 <p className="text-muted-foreground">
-                  {medicine.categories?.name || "Uncategorized"}
+                  {product.category || "Uncategorized"}
                 </p>
               </div>
 
               <div className="text-3xl font-bold text-primary">
-                ${Number(medicine.price).toFixed(2)}
+                ₹{Number(product.price).toFixed(2)}
               </div>
 
               <Card>
@@ -202,46 +202,46 @@ const ProductDetail = () => {
                   <CardTitle>Product Details</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {medicine.description && (
+                  {product.description && (
                     <div>
                       <h3 className="font-semibold mb-1">Description</h3>
-                      <p className="text-muted-foreground">{medicine.description}</p>
+                      <p className="text-muted-foreground">{product.description}</p>
                     </div>
                   )}
 
-                  {medicine.manufacturer && (
+                  {product.manufacturer && (
                     <div>
                       <h3 className="font-semibold mb-1">Manufacturer</h3>
-                      <p className="text-muted-foreground">{medicine.manufacturer}</p>
+                      <p className="text-muted-foreground">{product.manufacturer}</p>
                     </div>
                   )}
 
-                  {medicine.active_ingredients && (
+                  {product.dosage && (
                     <div>
-                      <h3 className="font-semibold mb-1">Active Ingredients</h3>
-                      <p className="text-muted-foreground">{medicine.active_ingredients}</p>
+                      <h3 className="font-semibold mb-1">Dosage</h3>
+                      <p className="text-muted-foreground">{product.dosage}</p>
                     </div>
                   )}
 
-                  {medicine.dosage_form && (
+                  {product.usage_instructions && (
                     <div>
-                      <h3 className="font-semibold mb-1">Dosage Form</h3>
-                      <p className="text-muted-foreground">{medicine.dosage_form}</p>
+                      <h3 className="font-semibold mb-1">Usage Instructions</h3>
+                      <p className="text-muted-foreground">{product.usage_instructions}</p>
                     </div>
                   )}
 
-                  {medicine.strength && (
+                  {product.side_effects && (
                     <div>
-                      <h3 className="font-semibold mb-1">Strength</h3>
-                      <p className="text-muted-foreground">{medicine.strength}</p>
+                      <h3 className="font-semibold mb-1">Side Effects</h3>
+                      <p className="text-muted-foreground">{product.side_effects}</p>
                     </div>
                   )}
 
                   <div>
                     <h3 className="font-semibold mb-1">Stock</h3>
                     <p className="text-muted-foreground">
-                      {medicine.stock_quantity > 0
-                        ? `${medicine.stock_quantity} units available`
+                      {product.stock_quantity > 0
+                        ? `${product.stock_quantity} units available`
                         : "Out of stock"}
                     </p>
                   </div>
@@ -255,7 +255,7 @@ const ProductDetail = () => {
                     id="quantity"
                     type="number"
                     min="1"
-                    max={medicine.stock_quantity}
+                    max={product.stock_quantity}
                     value={quantity}
                     onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
                     className="w-24"
@@ -265,7 +265,7 @@ const ProductDetail = () => {
                 <div className="flex gap-3">
                   <Button
                     onClick={handleAddToCart}
-                    disabled={medicine.stock_quantity === 0}
+                    disabled={product.stock_quantity === 0}
                     className="flex-1"
                     variant="outline"
                   >
@@ -274,59 +274,11 @@ const ProductDetail = () => {
                   </Button>
                   <Button
                     onClick={handleBuyNow}
-                    disabled={medicine.stock_quantity === 0}
+                    disabled={product.stock_quantity === 0}
                     className="flex-1"
                   >
-                    Buy Now
                   </Button>
                 </div>
-
-                {medicine.requires_prescription && (
-                  <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button variant="secondary" className="w-full">
-                        <Upload className="mr-2 h-4 w-4" />
-                        Upload Prescription
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Upload Prescription</DialogTitle>
-                        <DialogDescription>
-                          {isAuthenticated
-                            ? "Please upload a valid prescription for this medicine."
-                            : "You need to login to upload a prescription."}
-                        </DialogDescription>
-                      </DialogHeader>
-
-                      {isAuthenticated ? (
-                        <div className="space-y-4">
-                          <div>
-                            <Label htmlFor="prescription">Prescription File</Label>
-                            <Input
-                              id="prescription"
-                              type="file"
-                              accept="image/*,.pdf"
-                              onChange={(e) => setPrescriptionFile(e.target.files?.[0] || null)}
-                            />
-                          </div>
-                          <Button onClick={handlePrescriptionUpload} className="w-full">
-                            Upload
-                          </Button>
-                        </div>
-                      ) : (
-                        <div className="space-y-4">
-                          <p className="text-center text-muted-foreground">
-                            Please login to upload your prescription
-                          </p>
-                          <Button onClick={() => navigate("/auth")} className="w-full">
-                            Login
-                          </Button>
-                        </div>
-                      )}
-                    </DialogContent>
-                  </Dialog>
-                )}
               </div>
             </div>
           </div>

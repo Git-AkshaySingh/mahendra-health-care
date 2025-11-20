@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const menuItems = [
   { title: "Dashboard", url: "/admin", icon: Home },
-  { title: "Medicines", url: "/admin/medicines", icon: Pill },
+  { title: "Products", url: "/admin/products", icon: Pill },
   { title: "Categories", url: "/admin/categories", icon: FolderTree },
   { title: "Users", url: "/admin/users", icon: Users },
   { title: "Blog Articles", url: "/admin/articles", icon: FileText },
