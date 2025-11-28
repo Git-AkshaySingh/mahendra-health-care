@@ -4,7 +4,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Shield } from "lucide-react";
+import { Shield, UserCog } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Users = () => {
   const { toast } = useToast();
@@ -22,21 +23,23 @@ const Users = () => {
     },
   });
 
-  const toggleAdminMutation = useMutation({
-    mutationFn: async ({ userId, isAdmin }: { userId: string; isAdmin: boolean }) => {
-      if (isAdmin) {
-        const { error } = await supabase
+  const updateRoleMutation = useMutation({
+    mutationFn: async ({ userId, newRole, currentRoles }: { userId: string; newRole: "admin" | "staff" | "user"; currentRoles: any[] }) => {
+      // First, remove all existing roles for the user
+      const existingRoleIds = currentRoles.map(r => r.id);
+      if (existingRoleIds.length > 0) {
+        const { error: deleteError } = await supabase
           .from("user_roles")
           .delete()
-          .eq("user_id", userId)
-          .eq("role", "admin");
-        if (error) throw error;
-      } else {
-        const { error } = await supabase
-          .from("user_roles")
-          .insert([{ user_id: userId, role: "admin" }]);
-        if (error) throw error;
+          .in("id", existingRoleIds);
+        if (deleteError) throw deleteError;
       }
+
+      // Then add the new role
+      const { error: insertError } = await supabase
+        .from("user_roles")
+        .insert([{ user_id: userId, role: newRole }]);
+      if (insertError) throw insertError;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-users"] });
@@ -47,8 +50,18 @@ const Users = () => {
     },
   });
 
-  const isAdmin = (roles: any[]) => {
-    return roles?.some((r) => r.role === "admin");
+  const getUserRole = (roles: any[]) => {
+    if (!roles || roles.length === 0) return "user";
+    // Priority: admin > staff > user
+    if (roles.some((r) => r.role === "admin")) return "admin";
+    if (roles.some((r) => r.role === "staff")) return "staff";
+    return "user";
+  };
+
+  const getRoleBadgeVariant = (role: string) => {
+    if (role === "admin") return "default";
+    if (role === "staff") return "secondary";
+    return "outline";
   };
 
   return (
@@ -71,34 +84,41 @@ const Users = () => {
           </TableHeader>
           <TableBody>
             {users?.map((user) => {
-              const hasAdminRole = isAdmin(user.user_roles);
+              const userRole = getUserRole(user.user_roles);
               return (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">{user.full_name || "N/A"}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.phone || "N/A"}</TableCell>
                   <TableCell>
-                    <Badge variant={hasAdminRole ? "default" : "secondary"}>
-                      {hasAdminRole ? "Admin" : "User"}
+                    <Badge variant={getRoleBadgeVariant(userRole)}>
+                      {userRole}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     {new Date(user.created_at).toLocaleDateString()}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() =>
-                        toggleAdminMutation.mutate({
+                    <Select
+                      value={userRole}
+                      onValueChange={(newRole) =>
+                        updateRoleMutation.mutate({
                           userId: user.id,
-                          isAdmin: hasAdminRole,
+                          newRole: newRole as "admin" | "staff" | "user",
+                          currentRoles: user.user_roles,
                         })
                       }
                     >
-                      <Shield className="mr-2 h-4 w-4" />
-                      {hasAdminRole ? "Remove Admin" : "Make Admin"}
-                    </Button>
+                      <SelectTrigger className="w-[130px]">
+                        <UserCog className="mr-2 h-4 w-4" />
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="user">User</SelectItem>
+                        <SelectItem value="staff">Staff</SelectItem>
+                        <SelectItem value="admin">Admin</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </TableCell>
                 </TableRow>
               );
