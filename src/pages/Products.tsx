@@ -100,7 +100,7 @@ const Products = () => {
                 <Card 
                   key={product.id} 
                   className="overflow-hidden transition-all hover:shadow-lg cursor-pointer"
-                  onClick={() => navigate(`/product/${product.id}`)}
+                  onClick={() => navigate(`/products/${product.id}`)}
                 >
                   <div className="h-48 bg-muted flex items-center justify-center">
                     {product.image_url ? (
@@ -139,7 +139,7 @@ const Products = () => {
                       className="w-full"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/product/${product.id}`);
+                        navigate(`/products/${product.id}`);
                       }}
                       disabled={product.stock_quantity === 0}
                     >
