@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
  */
 
 export async function createAdminUser() {
-  const email = "admin@mahendrahealthcare.com";
+  const email = "admin@test123.com";
   const password = "password@123";
 
   try {
