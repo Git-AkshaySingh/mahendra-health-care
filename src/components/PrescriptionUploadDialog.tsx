@@ -138,12 +138,20 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button 
-          variant="ghost" 
-          size="icon" 
+          variant="outline" 
+          size="sm"
           onClick={handleTriggerClick}
-          title="Upload Prescription"
+          className="gap-2 border-primary/30 hover:bg-primary/10"
         >
-          <FileImage className="h-5 w-5" />
+          <div className="relative">
+            <FileImage className="h-4 w-4" />
+            <div className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-primary flex items-center justify-center">
+              <svg className="h-1.5 w-1.5 text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                <path d="M12 19V5M5 12l7-7 7 7" />
+              </svg>
+            </div>
+          </div>
+          <span className="hidden sm:inline">Upload Prescription</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

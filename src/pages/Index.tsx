@@ -2,11 +2,11 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Truck, Clock, Award, Search } from "lucide-react";
+import { Shield, Truck, Clock, Award, Search, ChevronRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import heroImage from "@/assets/hero-pharmacy.jpg";
-import { CategoryIcons } from "@/components/CategoryIcons";
+import { HealthConcerns } from "@/components/HealthConcerns";
+import { PromoBanner } from "@/components/PromoBanner";
 import { ProductCarousel } from "@/components/ProductCarousel";
 import { useState } from "react";
 
@@ -25,88 +25,143 @@ const Index = () => {
     {
       icon: Shield,
       title: "Verified Products",
-      description: "All medicines are sourced from licensed manufacturers and verified for authenticity.",
+      description: "All medicines sourced from licensed manufacturers.",
     },
     {
       icon: Truck,
       title: "Fast Delivery",
-      description: "Get your medicines delivered to your doorstep within 24-48 hours.",
+      description: "Delivered to your doorstep within 24-48 hours.",
     },
     {
       icon: Clock,
       title: "24/7 Support",
-      description: "Our pharmacists are available round the clock to answer your questions.",
+      description: "Pharmacists available round the clock.",
     },
     {
       icon: Award,
       title: "Best Quality",
-      description: "We maintain strict quality standards for all our products.",
+      description: "Strict quality standards for all products.",
     },
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Banner */}
-        <section
-          className="relative h-[400px] md:h-[500px] flex items-center justify-center bg-cover bg-center"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-accent/80" />
-          <div className="container relative z-10 mx-auto px-4 text-center text-white">
-            <h1 className="mb-4 text-4xl font-bold md:text-5xl">
-              Your Health, Our Priority
-            </h1>
-            <p className="mb-6 text-lg md:text-xl">
-              Quality medicines delivered to your doorstep
-            </p>
-            
-            {/* Search Bar */}
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-              <div className="flex gap-2 bg-white rounded-lg p-2">
-                <Input
-                  type="text"
-                  placeholder="Search for Medicines and Health Products"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 border-0 focus-visible:ring-0"
-                />
-                <Button type="submit" size="lg">
-                  <Search className="h-5 w-5" />
-                </Button>
-              </div>
-            </form>
+        {/* Hero Banner with Search */}
+        <section className="bg-gradient-to-r from-primary to-primary/80 py-8 md:py-12">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center text-primary-foreground">
+              <h1 className="text-2xl md:text-4xl font-bold mb-2">
+                MHC: India's Leading Online Pharmacy
+              </h1>
+              <p className="text-sm md:text-base opacity-90 mb-6">
+                Quality medicines delivered to your doorstep
+              </p>
+              
+              {/* Search Bar */}
+              <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+                <div className="flex gap-2 bg-background rounded-lg p-1.5 shadow-lg">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      placeholder="Search for Medicines and Health Products"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 border-0 focus-visible:ring-0 bg-transparent"
+                    />
+                  </div>
+                  <Button type="submit">
+                    Search
+                  </Button>
+                </div>
+              </form>
+            </div>
           </div>
         </section>
 
-        {/* Category Icons */}
-        <CategoryIcons />
+        {/* Promo Banner */}
+        <PromoBanner />
+
+        {/* Health Concerns */}
+        <HealthConcerns />
 
         {/* Product Carousels */}
-        <div className="container mx-auto px-4">
-          <ProductCarousel title="Trending Today" />
-          <ProductCarousel title="Winter Care Essentials" />
-          <ProductCarousel title="Immunity Boosters" />
-          <ProductCarousel title="Personal Care" />
+        <div className="space-y-2">
+          <section className="py-4 bg-muted/30">
+            <div className="container mx-auto px-4">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Trending Today</h2>
+                <Button variant="link" asChild className="text-primary gap-1">
+                  <Link to="/products">
+                    See All <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+              <ProductCarousel title="" />
+            </div>
+          </section>
+
+          <section className="py-4">
+            <div className="container mx-auto px-4">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Winter Care Essentials</h2>
+                <Button variant="link" asChild className="text-primary gap-1">
+                  <Link to="/products">
+                    See All <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+              <ProductCarousel title="" />
+            </div>
+          </section>
+
+          <section className="py-4 bg-muted/30">
+            <div className="container mx-auto px-4">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Immunity Boosters</h2>
+                <Button variant="link" asChild className="text-primary gap-1">
+                  <Link to="/products">
+                    See All <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+              <ProductCarousel title="" />
+            </div>
+          </section>
+
+          <section className="py-4">
+            <div className="container mx-auto px-4">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Personal Care</h2>
+                <Button variant="link" asChild className="text-primary gap-1">
+                  <Link to="/products">
+                    See All <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+              <ProductCarousel title="" />
+            </div>
+          </section>
         </div>
 
         {/* Why Choose Us */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-12 bg-background">
           <div className="container mx-auto px-4">
-            <h2 className="mb-12 text-center text-3xl font-bold">Why Choose Us?</h2>
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            <h2 className="mb-8 text-center text-2xl font-bold">Why Choose MHC?</h2>
+            <div className="grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4">
               {features.map((feature, index) => (
-                <Card key={index} className="border transition-all hover:shadow-lg">
-                  <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                      <feature.icon className="h-6 w-6 text-primary" />
+                <Card key={index} className="border transition-all hover:shadow-md">
+                  <CardHeader className="pb-2">
+                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                      <feature.icon className="h-5 w-5 text-primary" />
                     </div>
-                    <CardTitle>{feature.title}</CardTitle>
+                    <CardTitle className="text-base">{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription>{feature.description}</CardDescription>
+                    <CardDescription className="text-sm">{feature.description}</CardDescription>
                   </CardContent>
                 </Card>
               ))}
@@ -114,14 +169,15 @@ const Index = () => {
           </div>
         </section>
 
-        <section className="py-16 bg-muted/50">
+        {/* CTA Section */}
+        <section className="py-10 bg-primary/5">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="mb-6 text-3xl font-bold">Need Help?</h2>
-            <p className="mb-8 text-lg text-muted-foreground">
+            <h2 className="mb-4 text-2xl font-bold">Need Help?</h2>
+            <p className="mb-6 text-muted-foreground">
               Our expert pharmacists are here to assist you
             </p>
             <Button asChild size="lg">
-              <Link to="/auth">Get Started</Link>
+              <Link to="/contact">Contact Us</Link>
             </Button>
           </div>
         </section>
