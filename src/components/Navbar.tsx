@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { User, Menu, X } from "lucide-react";
+import { User, Menu, X, UserCircle } from "lucide-react";
 import { CartSheet } from "@/components/CartSheet";
+import { PrescriptionUploadDialog } from "@/components/PrescriptionUploadDialog";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -66,10 +67,21 @@ export const Navbar = () => {
             <CartSheet />
           </div>
 
+          <PrescriptionUploadDialog 
+            user={user} 
+            onLoginRequired={() => {
+              toast({
+                title: "Login Required",
+                description: "Please login to upload prescriptions",
+              });
+              navigate("/auth");
+            }}
+          />
+
           {user ? (
             <>
-              <Button variant="ghost" size="icon" onClick={() => navigate("/admin")}>
-                <User className="h-5 w-5" />
+              <Button variant="ghost" size="icon" onClick={() => navigate("/dashboard")} title="My Account">
+                <UserCircle className="h-5 w-5" />
               </Button>
               <Button variant="outline" size="sm" onClick={handleLogout} className="hidden md:flex">
                 Logout
@@ -119,11 +131,11 @@ export const Navbar = () => {
             {user ? (
               <>
                 <Link
-                  to="/admin"
+                  to="/dashboard"
                   className="block text-sm font-medium transition-colors hover:text-primary"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Admin Panel
+                  My Account
                 </Link>
                 <Button variant="outline" size="sm" onClick={handleLogout} className="w-full">
                   Logout
