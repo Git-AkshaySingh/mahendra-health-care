@@ -6,7 +6,7 @@ export const PromotionalBanner = () => {
   return (
     <section className="py-6 bg-background">
       <div className="container mx-auto px-4">
-        <div className="bg-gradient-to-r from-orange-500 to-orange-400 rounded-2xl p-6 md:p-8 relative overflow-hidden">
+        <div className="bg-gradient-to-r from-orange-400 to-amber-300 rounded-2xl p-6 md:p-8 relative overflow-hidden">
           {/* Background decorative elements */}
           <div className="absolute right-0 top-0 w-1/2 h-full opacity-20">
             <div className="absolute right-10 top-5 w-20 h-20 bg-white rounded-full" />
