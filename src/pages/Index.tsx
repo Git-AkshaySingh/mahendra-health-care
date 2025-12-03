@@ -9,6 +9,8 @@ import { HealthConcerns } from "@/components/HealthConcerns";
 import { PromoBanner } from "@/components/PromoBanner";
 import { ProductCarousel } from "@/components/ProductCarousel";
 import { ScrollingBanner } from "@/components/ScrollingBanner";
+import { HeroCarousel } from "@/components/HeroCarousel";
+import { PromotionalBanner } from "@/components/PromotionalBanner";
 import { useState } from "react";
 
 const Index = () => {
@@ -51,38 +53,34 @@ const Index = () => {
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Banner with Search */}
-        <section className="bg-gradient-to-r from-primary to-primary/80 py-8 md:py-12">
+        {/* Hero Carousel */}
+        <HeroCarousel />
+
+        {/* Search Bar Section */}
+        <section className="bg-muted/50 py-4">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center text-primary-foreground">
-              <h1 className="text-2xl md:text-4xl font-bold mb-2">
-                MHC: India's Leading Online Pharmacy
-              </h1>
-              <p className="text-sm md:text-base opacity-90 mb-6">
-                Quality medicines delivered to your doorstep
-              </p>
-              
-              {/* Search Bar */}
-              <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-                <div className="flex gap-2 bg-background rounded-lg p-1.5 shadow-lg">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="text"
-                      placeholder="Search for Medicines and Health Products"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 border-0 focus-visible:ring-0 bg-transparent"
-                    />
-                  </div>
-                  <Button type="submit">
-                    Search
-                  </Button>
+            <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+              <div className="flex gap-2 bg-background rounded-lg p-1.5 shadow-sm border">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    placeholder="Search for Medicines and Health Products"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 border-0 focus-visible:ring-0 bg-transparent"
+                  />
                 </div>
-              </form>
-            </div>
+                <Button type="submit">
+                  Search
+                </Button>
+              </div>
+            </form>
           </div>
         </section>
+
+        {/* Promotional Banner */}
+        <PromotionalBanner />
 
         {/* Promo Banner */}
         <PromoBanner />
