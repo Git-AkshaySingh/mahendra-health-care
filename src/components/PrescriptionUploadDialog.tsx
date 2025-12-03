@@ -141,12 +141,12 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
           variant="outline" 
           size="sm"
           onClick={handleTriggerClick}
-          className="gap-2 border-primary/30 hover:bg-primary/10"
+          className="gap-2 border-primary text-primary hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-colors"
         >
           <div className="relative">
             <FileImage className="h-4 w-4" />
-            <div className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-primary flex items-center justify-center">
-              <svg className="h-1.5 w-1.5 text-primary-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+            <div className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-current flex items-center justify-center">
+              <svg className="h-1.5 w-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                 <path d="M12 19V5M5 12l7-7 7 7" />
               </svg>
             </div>

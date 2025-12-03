@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { HealthConcerns } from "@/components/HealthConcerns";
 import { PromoBanner } from "@/components/PromoBanner";
 import { ProductCarousel } from "@/components/ProductCarousel";
+import { ScrollingBanner } from "@/components/ScrollingBanner";
 import { useState } from "react";
 
 const Index = () => {
@@ -46,6 +47,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <ScrollingBanner />
       <Navbar />
 
       <main className="flex-1">
