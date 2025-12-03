@@ -11,6 +11,7 @@ import { ProductCarousel } from "@/components/ProductCarousel";
 import { ScrollingBanner } from "@/components/ScrollingBanner";
 import { HeroCarousel } from "@/components/HeroCarousel";
 import { PromotionalBanner } from "@/components/PromotionalBanner";
+import { LongAdBanner, DualAdBanners, HealthOfferBanner } from "@/components/AdBanners";
 import { useState } from "react";
 
 const Index = () => {
@@ -53,9 +54,6 @@ const Index = () => {
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Carousel */}
-        <HeroCarousel />
-
         {/* Search Bar Section */}
         <section className="bg-muted/50 py-4">
           <div className="container mx-auto px-4">
@@ -79,14 +77,20 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Promotional Banner */}
-        <PromotionalBanner />
+        {/* Hero Carousel */}
+        <HeroCarousel />
 
         {/* Promo Banner */}
         <PromoBanner />
 
         {/* Health Concerns */}
         <HealthConcerns />
+
+        {/* Promotional Banner */}
+        <PromotionalBanner />
+
+        {/* Long Ad Banner */}
+        <LongAdBanner />
 
         {/* Product Carousels */}
         <div className="space-y-2">
@@ -118,6 +122,9 @@ const Index = () => {
             </div>
           </section>
 
+          {/* Dual Ad Banners */}
+          <DualAdBanners />
+
           <section className="py-4 bg-muted/30">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between mb-4">
@@ -131,6 +138,9 @@ const Index = () => {
               <ProductCarousel title="" />
             </div>
           </section>
+
+          {/* Health Offer Banner */}
+          <HealthOfferBanner />
 
           <section className="py-4">
             <div className="container mx-auto px-4">
