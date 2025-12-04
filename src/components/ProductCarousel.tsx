@@ -18,13 +18,13 @@ export const ProductCarousel = ({ title, categoryId, limit = 12 }: ProductCarous
     queryKey: ["carousel-products", categoryId, limit],
     queryFn: async () => {
       let query = supabase
-        .from("medicines")
+        .from("products")
         .select("*")
         .gt("stock_quantity", 0)
         .limit(limit);
 
       if (categoryId) {
-        query = query.eq("category_id", categoryId);
+        query = query.eq("category", categoryId);
       }
 
       const { data, error } = await query;
@@ -45,50 +45,34 @@ export const ProductCarousel = ({ title, categoryId, limit = 12 }: ProductCarous
 
   if (isLoading) {
     return (
-      <section className="py-6">
-        <h2 className="text-xl font-bold mb-4">{title}</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-64 bg-muted animate-pulse rounded-lg" />
-          ))}
-        </div>
-      </section>
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="h-72 bg-muted animate-pulse rounded-xl" />
+        ))}
+      </div>
     );
   }
 
   if (!products || products.length === 0) return null;
 
   return (
-    <section className="py-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold">{title}</h2>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => scroll("left")}
-            className="h-8 w-8"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => scroll("right")}
-            className="h-8 w-8"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
+    <div className="relative group">
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={() => scroll("left")}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-background/95 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2 hover:bg-background"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </Button>
       
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4"
+        className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-2"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {products.map((product) => (
-          <div key={product.id} className="flex-none w-[180px]">
+          <div key={product.id} className="flex-none w-[200px]">
             <ProductCard
               id={product.id}
               name={product.name}
@@ -96,10 +80,20 @@ export const ProductCarousel = ({ title, categoryId, limit = 12 }: ProductCarous
               image_url={product.image_url || undefined}
               stock_quantity={product.stock_quantity}
               manufacturer={product.manufacturer || undefined}
+              discount_percent={product.discount_percent || 0}
             />
           </div>
         ))}
       </div>
-    </section>
+
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={() => scroll("right")}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 rounded-full bg-background/95 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2 hover:bg-background"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </Button>
+    </div>
   );
 };

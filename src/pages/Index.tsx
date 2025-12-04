@@ -55,21 +55,21 @@ const Index = () => {
 
       <main className="flex-1">
         {/* Search Bar Section */}
-        <section className="bg-muted/50 py-4">
+        <section className="bg-gradient-to-b from-primary/5 to-background py-5">
           <div className="container mx-auto px-4">
             <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-              <div className="flex gap-2 bg-background rounded-lg p-1.5 shadow-sm border">
+              <div className="flex gap-2 bg-background rounded-full p-1.5 shadow-lg border border-border/50">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
                     type="text"
                     placeholder="Search for Medicines and Health Products"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 border-0 focus-visible:ring-0 bg-transparent"
+                    className="pl-12 border-0 focus-visible:ring-0 bg-transparent h-12 text-base"
                   />
                 </div>
-                <Button type="submit">
+                <Button type="submit" size="lg" className="rounded-full px-8">
                   Search
                 </Button>
               </div>
@@ -93,12 +93,12 @@ const Index = () => {
         <LongAdBanner />
 
         {/* Product Carousels */}
-        <div className="space-y-2">
-          <section className="py-4 bg-muted/30">
+        <div className="space-y-0">
+          <section className="py-8 bg-gradient-to-b from-muted/50 to-background">
             <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Trending Today</h2>
-                <Button variant="link" asChild className="text-primary gap-1">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Trending Today</h2>
+                <Button variant="link" asChild className="text-primary gap-1 font-medium">
                   <Link to="/products">
                     See All <ChevronRight className="h-4 w-4" />
                   </Link>
@@ -108,11 +108,11 @@ const Index = () => {
             </div>
           </section>
 
-          <section className="py-4">
+          <section className="py-8 bg-background">
             <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Winter Care Essentials</h2>
-                <Button variant="link" asChild className="text-primary gap-1">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Winter Care Essentials</h2>
+                <Button variant="link" asChild className="text-primary gap-1 font-medium">
                   <Link to="/products">
                     See All <ChevronRight className="h-4 w-4" />
                   </Link>
@@ -125,11 +125,11 @@ const Index = () => {
           {/* Dual Ad Banners */}
           <DualAdBanners />
 
-          <section className="py-4 bg-muted/30">
+          <section className="py-8 bg-gradient-to-b from-muted/50 to-background">
             <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Immunity Boosters</h2>
-                <Button variant="link" asChild className="text-primary gap-1">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Immunity Boosters</h2>
+                <Button variant="link" asChild className="text-primary gap-1 font-medium">
                   <Link to="/products">
                     See All <ChevronRight className="h-4 w-4" />
                   </Link>
@@ -142,11 +142,11 @@ const Index = () => {
           {/* Health Offer Banner */}
           <HealthOfferBanner />
 
-          <section className="py-4">
+          <section className="py-8 bg-background">
             <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Personal Care</h2>
-                <Button variant="link" asChild className="text-primary gap-1">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-foreground">Personal Care</h2>
+                <Button variant="link" asChild className="text-primary gap-1 font-medium">
                   <Link to="/products">
                     See All <ChevronRight className="h-4 w-4" />
                   </Link>
