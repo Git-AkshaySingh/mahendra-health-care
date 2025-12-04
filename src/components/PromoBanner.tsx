@@ -1,25 +1,51 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Truck, Shield, Clock, Percent } from "lucide-react";
+
+const promoItems = [
+  {
+    icon: Percent,
+    title: "Best Prices",
+    description: "Up to 25% OFF",
+    gradient: "from-orange-500 to-amber-500",
+  },
+  {
+    icon: Truck,
+    title: "Free Delivery",
+    description: "On orders ₹299+",
+    gradient: "from-blue-500 to-cyan-500",
+  },
+  {
+    icon: Shield,
+    title: "100% Genuine",
+    description: "Verified Products",
+    gradient: "from-green-500 to-emerald-500",
+  },
+  {
+    icon: Clock,
+    title: "24/7 Support",
+    description: "Expert Help",
+    gradient: "from-purple-500 to-violet-500",
+  },
+];
 
 export const PromoBanner = () => {
   return (
-    <section className="bg-gradient-to-r from-primary/10 to-accent/10 py-4">
+    <section className="py-6 bg-background">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-card rounded-xl p-4 md:p-6 shadow-sm border">
-          <div className="flex items-center gap-4">
-            <div className="bg-primary/10 text-primary font-semibold text-xs px-3 py-1 rounded-full">
-              Member Benefits
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {promoItems.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border/50 hover:border-primary/30 hover:shadow-lg transition-all duration-300 group"
+            >
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                <item.icon className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground text-sm">{item.title}</h3>
+                <p className="text-xs text-muted-foreground">{item.description}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">
-                <span className="font-semibold text-foreground">Get extra 5% savings</span> on your orders. Free shipping, same-day delivery and more.
-              </p>
-              <p className="text-xs text-muted-foreground">Become a member today!</p>
-            </div>
-          </div>
-          <Button asChild variant="default" size="sm">
-            <Link to="/auth">Know More</Link>
-          </Button>
+          ))}
         </div>
       </div>
     </section>
