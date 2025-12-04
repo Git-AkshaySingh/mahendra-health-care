@@ -55,10 +55,18 @@ const Index = () => {
 
       <main className="flex-1">
         {/* Search Bar Section */}
-        <section className="bg-gradient-to-b from-primary/5 to-background py-5">
+        <section className="bg-gradient-to-r from-primary via-primary to-primary/90 py-8">
           <div className="container mx-auto px-4">
+            <div className="text-center mb-5">
+              <h1 className="text-xl md:text-2xl font-bold text-primary-foreground mb-1">
+                What are you looking for?
+              </h1>
+              <p className="text-primary-foreground/80 text-sm">
+                Search from 10,000+ medicines and healthcare products
+              </p>
+            </div>
             <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-              <div className="flex gap-2 bg-background rounded-full p-1.5 shadow-lg border border-border/50">
+              <div className="flex gap-2 bg-background rounded-full p-1.5 shadow-xl">
                 <div className="relative flex-1">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
@@ -69,7 +77,7 @@ const Index = () => {
                     className="pl-12 border-0 focus-visible:ring-0 bg-transparent h-12 text-base"
                   />
                 </div>
-                <Button type="submit" size="lg" className="rounded-full px-8">
+                <Button type="submit" size="lg" className="rounded-full px-8 bg-foreground text-background hover:bg-foreground/90">
                   Search
                 </Button>
               </div>
