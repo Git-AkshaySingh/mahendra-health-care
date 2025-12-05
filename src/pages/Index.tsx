@@ -55,7 +55,7 @@ const Index = () => {
 
       <main className="flex-1">
         {/* Search Bar Section */}
-        <section className="bg-primary/10 py-4">
+        <section className="bg-slate-100 py-4">
           <div className="container mx-auto px-4">
             <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
               <div className="flex items-center gap-2 bg-background rounded-full p-1.5 shadow-lg border border-border">
