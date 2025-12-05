@@ -2,29 +2,16 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Truck, Clock, Award, Search, ChevronRight } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { Input } from "@/components/ui/input";
-import { HealthConcerns } from "@/components/HealthConcerns";
-import { PromoBanner } from "@/components/PromoBanner";
-import { ProductCarousel } from "@/components/ProductCarousel";
-import { ScrollingBanner } from "@/components/ScrollingBanner";
+import { Shield, Truck, Clock, Award, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { HeroCarousel } from "@/components/HeroCarousel";
-import { PromotionalBanner } from "@/components/PromotionalBanner";
-import { LongAdBanner, DualAdBanners, HealthOfferBanner } from "@/components/AdBanners";
-import { useState } from "react";
+import { BestSellingProducts } from "@/components/BestSellingProducts";
+import { PromoBannerCards } from "@/components/PromoBannerCards";
+import { HotDeals } from "@/components/HotDeals";
+import { PopularProducts } from "@/components/PopularProducts";
+import { ScrollingBanner } from "@/components/ScrollingBanner";
 
 const Index = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
-    }
-  };
-
   const features = [
     {
       icon: Shield,
@@ -54,111 +41,23 @@ const Index = () => {
       <Navbar />
 
       <main className="flex-1">
-        {/* Search Bar Section */}
-        <section className="bg-slate-100 py-4">
-          <div className="container mx-auto px-4">
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-              <div className="flex items-center gap-2 bg-background rounded-full p-1.5 shadow-lg border border-border">
-                <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    placeholder="Search for Medicines and Health Products"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-12 border-0 focus-visible:ring-0 bg-transparent h-10 text-base"
-                  />
-                </div>
-                <Button type="submit" className="rounded-full px-6 h-10">
-                  Search
-                </Button>
-              </div>
-            </form>
-          </div>
-        </section>
-
-        {/* Hero Carousel */}
+        {/* Hero Carousel with Side Banners */}
         <HeroCarousel />
 
-        {/* Promo Banner */}
-        <PromoBanner />
+        {/* Best Selling Products */}
+        <BestSellingProducts />
 
-        {/* Health Concerns */}
-        <HealthConcerns />
+        {/* Promotional Banner Cards */}
+        <PromoBannerCards />
 
-        {/* Promotional Banner */}
-        <PromotionalBanner />
+        {/* Hot Deals */}
+        <HotDeals />
 
-        {/* Long Ad Banner */}
-        <LongAdBanner />
-
-        {/* Product Carousels */}
-        <div className="space-y-0">
-          <section className="py-8 bg-gradient-to-b from-muted/50 to-background">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-foreground">Trending Today</h2>
-                <Button variant="link" asChild className="text-primary gap-1 font-medium">
-                  <Link to="/products">
-                    See All <ChevronRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-              <ProductCarousel title="" />
-            </div>
-          </section>
-
-          <section className="py-8 bg-background">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-foreground">Winter Care Essentials</h2>
-                <Button variant="link" asChild className="text-primary gap-1 font-medium">
-                  <Link to="/products">
-                    See All <ChevronRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-              <ProductCarousel title="" />
-            </div>
-          </section>
-
-          {/* Dual Ad Banners */}
-          <DualAdBanners />
-
-          <section className="py-8 bg-gradient-to-b from-muted/50 to-background">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-foreground">Immunity Boosters</h2>
-                <Button variant="link" asChild className="text-primary gap-1 font-medium">
-                  <Link to="/products">
-                    See All <ChevronRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-              <ProductCarousel title="" />
-            </div>
-          </section>
-
-          {/* Health Offer Banner */}
-          <HealthOfferBanner />
-
-          <section className="py-8 bg-background">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-foreground">Personal Care</h2>
-                <Button variant="link" asChild className="text-primary gap-1 font-medium">
-                  <Link to="/products">
-                    See All <ChevronRight className="h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-              <ProductCarousel title="" />
-            </div>
-          </section>
-        </div>
+        {/* Popular Products */}
+        <PopularProducts />
 
         {/* Why Choose Us */}
-        <section className="py-12 bg-background">
+        <section className="py-12 bg-muted/30">
           <div className="container mx-auto px-4">
             <h2 className="mb-8 text-center text-2xl font-bold">Why Choose MHC?</h2>
             <div className="grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4">
