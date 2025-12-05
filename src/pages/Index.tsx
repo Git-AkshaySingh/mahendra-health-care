@@ -55,10 +55,10 @@ const Index = () => {
 
       <main className="flex-1">
         {/* Search Bar Section */}
-        <section className="bg-muted py-4 border-b border-border">
+        <section className="bg-primary/10 py-4">
           <div className="container mx-auto px-4">
             <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-              <div className="flex gap-2 bg-background rounded-full p-1.5 shadow-md border border-border">
+              <div className="flex items-center gap-2 bg-background rounded-full p-1.5 shadow-lg border border-border">
                 <div className="relative flex-1">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
@@ -66,10 +66,10 @@ const Index = () => {
                     placeholder="Search for Medicines and Health Products"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-12 border-0 focus-visible:ring-0 bg-transparent h-11 text-base"
+                    className="pl-12 border-0 focus-visible:ring-0 bg-transparent h-10 text-base"
                   />
                 </div>
-                <Button type="submit" size="default" className="rounded-full px-6">
+                <Button type="submit" className="rounded-full px-6 h-10">
                   Search
                 </Button>
               </div>
