@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { User, Menu, X, UserCircle, Phone, ChevronDown, Search, Heart, ShoppingCart } from "lucide-react";
+import { User, Menu, X, Phone, ChevronDown, Search, Heart } from "lucide-react";
 import { CartSheet } from "@/components/CartSheet";
 import { PrescriptionUploadDialog } from "@/components/PrescriptionUploadDialog";
 import { useState } from "react";
@@ -57,38 +57,6 @@ export const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background shadow-sm">
-      {/* Top Bar */}
-      <div className="bg-muted/50 border-b">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-8 text-xs">
-            <span className="text-muted-foreground">Welcome to Mahendra Health Care!</span>
-            <div className="hidden md:flex items-center gap-4">
-              {user ? (
-                <>
-                  <Link to="/dashboard" className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
-                    <User className="h-3 w-3" />
-                    My Account
-                  </Link>
-                  <button onClick={handleLogout} className="text-muted-foreground hover:text-primary transition-colors">
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link to="/auth" className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
-                    <User className="h-3 w-3" />
-                    Login
-                  </Link>
-                  <Link to="/auth" className="text-muted-foreground hover:text-primary transition-colors">
-                    My Account
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Header */}
       <div className="bg-background border-b">
         <div className="container mx-auto px-4">
@@ -101,25 +69,16 @@ export const Navbar = () => {
 
             {/* Search Bar */}
             <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl">
-              <div className="flex w-full border border-border rounded-md overflow-hidden">
-                <div className="relative">
-                  <select className="h-10 px-3 pr-8 bg-muted/50 border-r border-border text-sm appearance-none cursor-pointer focus:outline-none">
-                    <option>All Categories</option>
-                    <option>Medicines</option>
-                    <option>Ayurveda</option>
-                    <option>Healthcare</option>
-                    <option>Personal Care</option>
-                  </select>
-                  <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                </div>
+              <div className="flex w-full border-2 border-primary/60 rounded-lg overflow-hidden shadow-sm bg-slate-50/80">
                 <Input
                   type="text"
-                  placeholder="Search"
+                  placeholder="Search for medicines, health products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 border-0 focus-visible:ring-0 h-10 rounded-none"
+                  className="flex-1 border-0 focus-visible:ring-0 h-11 rounded-none bg-transparent placeholder:text-muted-foreground/70"
                 />
-                <Button type="submit" className="rounded-none h-10 px-6">
+                <Button type="submit" className="rounded-none h-11 px-6 bg-primary hover:bg-primary/90">
+                  <Search className="h-4 w-4 mr-2" />
                   Search
                 </Button>
               </div>
@@ -127,6 +86,26 @@ export const Navbar = () => {
 
             {/* Right Actions */}
             <div className="flex items-center gap-3">
+              {/* Login/Account in Main Nav */}
+              <div className="hidden md:flex items-center gap-2">
+                {user ? (
+                  <>
+                    <Link to="/dashboard" className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted">
+                      <User className="h-4 w-4" />
+                      My Account
+                    </Link>
+                    <button onClick={handleLogout} className="text-sm font-medium text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted">
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link to="/auth" className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted">
+                    <User className="h-4 w-4" />
+                    Login / Register
+                  </Link>
+                )}
+              </div>
+
               <PrescriptionUploadDialog 
                 user={user} 
                 onLoginRequired={() => {

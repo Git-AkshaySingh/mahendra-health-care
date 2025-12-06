@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroBanner1 from "@/assets/hero-banner-1.jpg";
-import heroBanner2 from "@/assets/hero-banner-2.jpg";
-import heroBanner3 from "@/assets/hero-banner-3.jpg";
+import heroPharmacy from "@/assets/hero-pharmacy-pro.jpg";
+import heroSale from "@/assets/hero-sale.jpg";
+import heroAyurveda from "@/assets/hero-ayurveda.jpg";
+import promoHerbal from "@/assets/promo-herbal.jpg";
+import promoOils from "@/assets/promo-oils.jpg";
 
 const slides = [
   {
-    image: heroBanner1,
+    image: heroPharmacy,
     subtitle: "GET THE COMPLETE",
     title: "Quality Healthcare Products",
     description: "Up to 25% off on all medicines",
@@ -16,7 +18,7 @@ const slides = [
     buttonLink: "/products",
   },
   {
-    image: heroBanner2,
+    image: heroSale,
     subtitle: "LIMITED TIME OFFER",
     title: "Up to 25% Off",
     description: "Save big on medicines and healthcare products",
@@ -24,7 +26,7 @@ const slides = [
     buttonLink: "/products",
   },
   {
-    image: heroBanner3,
+    image: heroAyurveda,
     subtitle: "AYURVEDA & HERBAL",
     title: "Natural Wellness",
     description: "Discover the power of natural healing",
@@ -35,16 +37,16 @@ const slides = [
 
 const sidePromos = [
   {
-    image: heroBanner2,
+    image: promoOils,
     label: "EXCLUSIVE",
-    title: "100% Pure Essential Oil",
-    bgColor: "bg-cyan-400",
+    title: "100% Pure Essential Oils",
+    bgColor: "bg-cyan-500",
   },
   {
-    image: heroBanner3,
+    image: promoHerbal,
     label: "EXCLUSIVE",
     title: "Natural Herbal Products",
-    bgColor: "bg-teal-400",
+    bgColor: "bg-emerald-500",
   },
 ];
 
@@ -87,7 +89,7 @@ export const HeroCarousel = () => {
                     alt={slide.title}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-sky-400/90 via-sky-400/70 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/50 to-transparent" />
                   <div className="absolute inset-0 flex items-center">
                     <div className="px-8 md:px-12 max-w-md">
                       <p className="text-xs md:text-sm font-medium mb-2 text-white/90 uppercase tracking-wider">
@@ -144,18 +146,19 @@ export const HeroCarousel = () => {
               <Link
                 key={index}
                 to="/products"
-                className={`relative rounded-xl overflow-hidden h-[182px] ${promo.bgColor} group`}
+                className="relative rounded-xl overflow-hidden h-[182px] group"
               >
                 <img
                   src={promo.image}
                   alt={promo.title}
-                  className="absolute right-0 top-0 h-full w-2/3 object-cover object-left"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
+                <div className={`absolute inset-0 ${promo.bgColor}/70`} />
                 <div className="absolute inset-0 p-5 flex flex-col justify-center">
                   <span className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-1">
                     {promo.label}
                   </span>
-                  <h3 className="text-lg font-bold text-white leading-tight max-w-[140px]">
+                  <h3 className="text-lg font-bold text-white leading-tight max-w-[160px]">
                     {promo.title}
                   </h3>
                   <span className="mt-3 text-sm font-medium text-white underline underline-offset-2 group-hover:no-underline">
