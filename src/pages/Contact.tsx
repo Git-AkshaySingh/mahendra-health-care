@@ -171,6 +171,23 @@ const Contact = () => {
               </Card>
             </div>
           </div>
+
+          {/* Google Maps */}
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold mb-6 text-center">Find Us on Map</h2>
+            <div className="rounded-xl overflow-hidden border border-border shadow-sm">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4164.172532085547!2d78.08099007612871!3d30.365095603306177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3908d72fd087e573%3A0x3b4210ffb8cb7b6c!2sMahendra%20Healthcare!5e1!3m2!1sen!2sin!4v1765009099518!5m2!1sen!2sin" 
+                width="100%" 
+                height="450" 
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Mahendra Healthcare Location"
+              />
+            </div>
+          </div>
         </div>
       </main>
 
