@@ -86,8 +86,25 @@ export const Navbar = () => {
 
             {/* Right Actions */}
             <div className="flex items-center gap-3">
-              {/* Login/Account in Main Nav */}
-              <div className="hidden md:flex items-center gap-2">
+              <PrescriptionUploadDialog 
+                user={user} 
+                onLoginRequired={() => {
+                  toast({
+                    title: "Login Required",
+                    description: "Please login to upload prescriptions",
+                  });
+                  navigate("/auth");
+                }}
+              />
+
+              <Button variant="ghost" size="icon" className="hidden md:flex relative">
+                <Heart className="h-5 w-5" />
+              </Button>
+
+              <CartSheet />
+
+              {/* Login/Account after Cart */}
+              <div className="hidden md:flex items-center gap-2 ml-2 pl-2 border-l border-border">
                 {user ? (
                   <>
                     <Link to="/dashboard" className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted">
@@ -105,23 +122,6 @@ export const Navbar = () => {
                   </Link>
                 )}
               </div>
-
-              <PrescriptionUploadDialog 
-                user={user} 
-                onLoginRequired={() => {
-                  toast({
-                    title: "Login Required",
-                    description: "Please login to upload prescriptions",
-                  });
-                  navigate("/auth");
-                }}
-              />
-
-              <Button variant="ghost" size="icon" className="hidden md:flex relative">
-                <Heart className="h-5 w-5" />
-              </Button>
-
-              <CartSheet />
 
               <Button
                 variant="ghost"

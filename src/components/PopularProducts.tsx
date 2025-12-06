@@ -3,6 +3,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
+import productVitaminC from "@/assets/product-vitamin-c.jpg";
+import productMultivitamin from "@/assets/product-multivitamin.jpg";
+import productOmega3 from "@/assets/product-omega3.jpg";
+import productCalcium from "@/assets/product-calcium.jpg";
+import productProtein from "@/assets/product-protein.jpg";
+
+const fallbackImages = [productVitaminC, productMultivitamin, productOmega3, productCalcium, productProtein];
 
 interface Product {
   id: string;
@@ -30,6 +37,11 @@ export const PopularProducts = () => {
   const getDiscountedPrice = (price: number, discount: number | null) => {
     if (!discount) return price;
     return price - (price * discount) / 100;
+  };
+
+  const getProductImage = (imageUrl: string | null, index: number) => {
+    if (imageUrl && imageUrl !== "/placeholder.svg") return imageUrl;
+    return fallbackImages[index % fallbackImages.length];
   };
 
   const tabs = [
@@ -61,7 +73,7 @@ export const PopularProducts = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {products.map((product) => (
+          {products.map((product, index) => (
             <div key={product.id} className="bg-background rounded-xl p-4 border border-border hover:shadow-lg transition-shadow">
               <Link to={`/products/${product.id}`} className="block">
                 <div className="relative mb-3">
@@ -72,7 +84,7 @@ export const PopularProducts = () => {
                   )}
                   <div className="aspect-square bg-muted/50 rounded-lg overflow-hidden">
                     <img
-                      src={product.image_url || "/placeholder.svg"}
+                      src={getProductImage(product.image_url, index)}
                       alt={product.name}
                       className="w-full h-full object-contain p-2"
                     />
