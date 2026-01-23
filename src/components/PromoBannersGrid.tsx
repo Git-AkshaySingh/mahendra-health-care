@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
 import promoHealthcare from "@/assets/promo-healthcare.jpg";
 import promoBeauty from "@/assets/promo-beauty.jpg";
 import promoPet from "@/assets/promo-pet.jpg";
@@ -7,150 +6,99 @@ import promoAyurveda from "@/assets/promo-ayurveda.jpg";
 import promoImmunity from "@/assets/promo-immunity.jpg";
 import promoPersonal from "@/assets/promo-personal.jpg";
 
-const topPromos = [
+const banners = [
   {
-    title: "Healthcare Essentials",
-    discount: "Upto 30% OFF",
+    title: "Upto 30% OFF",
+    subtitle: "Healthcare Essentials",
     image: promoHealthcare,
     link: "/products?category=healthcare",
-    overlay: "from-teal-600/80",
+    bgGradient: "from-teal-600/90 to-teal-600/40",
   },
   {
-    title: "Beauty Care",
-    discount: "Save Upto 40%",
+    title: "Save Upto 40%",
+    subtitle: "Beauty Care",
     image: promoBeauty,
     link: "/products?category=beauty",
-    overlay: "from-pink-500/80",
+    bgGradient: "from-pink-500/90 to-pink-500/40",
   },
-];
-
-const middlePromos = [
   {
-    title: "Best Deals",
-    subtitle: "On Personal Care",
-    discount: "25% OFF",
+    title: "25% OFF",
+    subtitle: "Best Deals on Personal Care",
     image: promoPersonal,
     link: "/products?category=personal-care",
-    overlay: "from-purple-500/80",
+    bgGradient: "from-purple-600/90 to-purple-600/40",
   },
   {
-    title: "Shop Pet Medicines",
-    subtitle: "",
-    discount: "Extra 20% OFF",
+    title: "Extra 20% OFF",
+    subtitle: "Shop Pet Medicines",
     image: promoPet,
     link: "/products?category=pet-care",
-    overlay: "from-sky-600/80",
+    bgGradient: "from-sky-600/90 to-sky-600/40",
   },
   {
-    title: "Shop Pet Medicines",
-    subtitle: "",
-    discount: "Extra 20% OFF",
-    image: promoPet,
-    link: "/products?category=pet-care",
-    overlay: "from-amber-600/80",
-  },
-];
-
-const bottomPromos = [
-  {
-    title: "Ayurveda & Herbal",
-    discount: "30% OFF",
+    title: "30% OFF",
+    subtitle: "Ayurveda & Herbal",
     image: promoAyurveda,
     link: "/products?category=ayurveda",
-    overlay: "from-green-600/80",
+    bgGradient: "from-green-700/90 to-green-700/40",
   },
   {
-    title: "Immunity Boosters",
-    subtitle: "Stay Healthy & Protected",
+    title: "Stay Protected",
+    subtitle: "Immunity Boosters",
     image: promoImmunity,
     link: "/products?category=immunity",
-    overlay: "from-orange-500/80",
+    bgGradient: "from-orange-500/90 to-orange-500/40",
   },
 ];
 
 export const PromoBannersGrid = () => {
   return (
     <section className="py-6 bg-background">
-      <div className="container mx-auto px-4 space-y-4">
-        {/* Top Row - 2 banners */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {topPromos.map((promo, index) => (
+      <div className="container mx-auto px-4">
+        {/* Row 1: 2 large banners */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          {banners.slice(0, 2).map((banner, index) => (
             <Link
               key={index}
-              to={promo.link}
+              to={banner.link}
               className="relative rounded-2xl overflow-hidden h-[180px] md:h-[200px] group"
             >
               <img
-                src={promo.image}
-                alt={promo.title}
+                src={banner.image}
+                alt={banner.subtitle}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className={`absolute inset-0 bg-gradient-to-r ${promo.overlay} via-transparent to-transparent`} />
+              <div className={`absolute inset-0 bg-gradient-to-r ${banner.bgGradient}`} />
               <div className="absolute inset-0 p-6 flex flex-col justify-center">
-                <h3 className="text-xl md:text-2xl font-bold text-white mb-1">
-                  {promo.discount}
-                </h3>
-                <p className="text-white/90 text-sm md:text-base mb-4">{promo.title}</p>
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-white bg-secondary px-4 py-2 rounded-lg w-fit hover:bg-secondary/90 transition-colors">
-                  Shop Now <ArrowRight className="h-4 w-4" />
+                <h3 className="text-2xl md:text-3xl font-bold text-white">{banner.title}</h3>
+                <p className="text-white/90 text-sm md:text-base mt-1">{banner.subtitle}</p>
+                <span className="mt-4 inline-flex items-center text-sm font-semibold text-secondary-foreground bg-secondary px-4 py-2 rounded-lg w-fit">
+                  Shop Now →
                 </span>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* Middle Row - 3 banners */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {middlePromos.map((promo, index) => (
+        {/* Row 2: 4 smaller banners */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {banners.slice(2).map((banner, index) => (
             <Link
               key={index}
-              to={promo.link}
-              className="relative rounded-2xl overflow-hidden h-[180px] group"
+              to={banner.link}
+              className="relative rounded-xl overflow-hidden h-[160px] md:h-[180px] group"
             >
               <img
-                src={promo.image}
-                alt={promo.title}
+                src={banner.image}
+                alt={banner.subtitle}
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className={`absolute inset-0 bg-gradient-to-r ${promo.overlay} via-transparent to-transparent`} />
-              <div className="absolute inset-0 p-5 flex flex-col justify-center">
-                <h3 className="text-lg font-bold text-white">{promo.title}</h3>
-                <p className="text-xl font-bold text-white mb-1">{promo.discount}</p>
-                {promo.subtitle && (
-                  <p className="text-white/80 text-sm mb-3">{promo.subtitle}</p>
-                )}
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-white bg-secondary px-3 py-1.5 rounded-lg w-fit hover:bg-secondary/90 transition-colors">
+              <div className={`absolute inset-0 bg-gradient-to-t ${banner.bgGradient}`} />
+              <div className="absolute inset-0 p-4 flex flex-col justify-end">
+                <h3 className="text-lg md:text-xl font-bold text-white leading-tight">{banner.title}</h3>
+                <p className="text-white/80 text-xs md:text-sm mt-0.5 line-clamp-1">{banner.subtitle}</p>
+                <span className="mt-2 text-xs font-semibold text-white underline underline-offset-2 group-hover:no-underline">
                   Shop Now
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {/* Bottom Row - 2 banners */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {bottomPromos.map((promo, index) => (
-            <Link
-              key={index}
-              to={promo.link}
-              className="relative rounded-2xl overflow-hidden h-[180px] md:h-[200px] group"
-            >
-              <img
-                src={promo.image}
-                alt={promo.title}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className={`absolute inset-0 bg-gradient-to-r ${promo.overlay} via-transparent to-transparent`} />
-              <div className="absolute inset-0 p-6 flex flex-col justify-center">
-                <h3 className="text-xl md:text-2xl font-bold text-white mb-1">
-                  {promo.title}
-                </h3>
-                <p className="text-lg font-semibold text-white/90 mb-1">{promo.discount}</p>
-                {promo.subtitle && (
-                  <p className="text-white/80 text-sm mb-3">{promo.subtitle}</p>
-                )}
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-white bg-secondary px-4 py-2 rounded-lg w-fit hover:bg-secondary/90 transition-colors">
-                  Shop Now <ArrowRight className="h-4 w-4" />
                 </span>
               </div>
             </Link>
