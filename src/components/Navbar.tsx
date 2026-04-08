@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { User, Menu, X, Phone, ChevronDown, Search, Heart } from "lucide-react";
+import { User, Menu, X, Search, ShoppingCart } from "lucide-react";
 import { CartSheet } from "@/components/CartSheet";
 import { PrescriptionUploadDialog } from "@/components/PrescriptionUploadDialog";
 import { useState } from "react";
@@ -32,16 +32,9 @@ export const Navbar = () => {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to logout",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Failed to logout", variant: "destructive" });
     } else {
-      toast({
-        title: "Success",
-        description: "Logged out successfully",
-      });
+      toast({ title: "Success", description: "Logged out successfully" });
       navigate("/");
     }
   };
@@ -53,72 +46,66 @@ export const Navbar = () => {
     }
   };
 
-  const cartItemsCount = items.reduce((sum, item) => sum + item.quantity, 0);
-
   return (
     <header className="sticky top-0 z-50 w-full bg-background shadow-sm">
-      {/* Main Header */}
-      <div className="bg-background border-b">
+      <div className="border-b">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 gap-4">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0">
               <img src="/src/assets/logo-mhc.png" alt="Mahendra Health Care" className="h-10 w-auto" />
-              <span className="text-xl font-bold text-primary hidden lg:inline-block">MHC</span>
+              <span className="text-lg font-bold text-primary hidden lg:inline-block">Mahendra Health Care</span>
             </Link>
 
-            {/* Search Bar */}
-            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl">
-              <div className="flex w-full border-2 border-primary/60 rounded-lg overflow-hidden shadow-sm bg-slate-50/80">
-                <Input
-                  type="text"
-                  placeholder="Search for medicines, health products..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 border-0 focus-visible:ring-0 h-11 rounded-none bg-transparent placeholder:text-muted-foreground/70"
-                />
-                <Button type="submit" className="rounded-none h-11 px-6 bg-primary hover:bg-primary/90">
-                  <Search className="h-4 w-4 mr-2" />
-                  Search
-                </Button>
-              </div>
-            </form>
+            {/* Center Nav Links */}
+            <nav className="hidden md:flex items-center gap-6">
+              <Link to="/products" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+                Prescriptions
+              </Link>
+              <Link to="/products?category=lab-tests" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+                Lab Tests
+              </Link>
+              <Link to="/products?category=wellness" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+                Wellness
+              </Link>
+              <Link to="/contact" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+                Consultations
+              </Link>
+            </nav>
 
-            {/* Right Actions */}
+            {/* Search + Actions */}
             <div className="flex items-center gap-3">
-              <PrescriptionUploadDialog 
-                user={user} 
-                onLoginRequired={() => {
-                  toast({
-                    title: "Login Required",
-                    description: "Please login to upload prescriptions",
-                  });
-                  navigate("/auth");
-                }}
-              />
-
-              <Button variant="ghost" size="icon" className="hidden md:flex relative">
-                <Heart className="h-5 w-5" />
-              </Button>
+              <form onSubmit={handleSearch} className="hidden md:flex">
+                <div className="flex border border-border rounded-lg overflow-hidden bg-muted/30">
+                  <div className="flex items-center px-3">
+                    <Search className="h-4 w-4 text-muted-foreground" />
+                  </div>
+                  <Input
+                    type="text"
+                    placeholder="Search medicines..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="border-0 focus-visible:ring-0 h-9 w-[180px] bg-transparent text-sm"
+                  />
+                </div>
+              </form>
 
               <CartSheet />
 
-              {/* Login/Account after Cart */}
-              <div className="hidden md:flex items-center gap-2 ml-2 pl-2 border-l border-border">
+              {/* Account */}
+              <div className="hidden md:flex items-center">
                 {user ? (
-                  <>
-                    <Link to="/dashboard" className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted">
-                      <User className="h-4 w-4" />
-                      My Account
+                  <div className="flex items-center gap-1">
+                    <Link to="/dashboard" className="p-2 rounded-full hover:bg-muted transition-colors">
+                      <User className="h-5 w-5 text-foreground" />
                     </Link>
-                    <button onClick={handleLogout} className="text-sm font-medium text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted">
+                    <button onClick={handleLogout} className="text-xs text-muted-foreground hover:text-foreground">
                       Logout
                     </button>
-                  </>
+                  </div>
                 ) : (
-                  <Link to="/auth" className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors px-3 py-2 rounded-md hover:bg-muted">
-                    <User className="h-4 w-4" />
-                    Login / Register
+                  <Link to="/auth" className="p-2 rounded-full hover:bg-muted transition-colors">
+                    <User className="h-5 w-5 text-foreground" />
                   </Link>
                 )}
               </div>
@@ -136,50 +123,10 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Navigation Bar */}
-      <div className="bg-background border-b hidden md:block">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-12">
-            {/* All Categories Button */}
-            <Button className="bg-accent hover:bg-accent/90 text-accent-foreground gap-2 rounded-md h-9">
-              <Menu className="h-4 w-4" />
-              All Categories
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-
-            {/* Navigation Links */}
-            <nav className="flex items-center gap-6">
-              <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
-                Home
-              </Link>
-              <Link to="/products" className="text-sm font-medium hover:text-primary transition-colors flex items-center gap-1">
-                Shop <ChevronDown className="h-3 w-3" />
-              </Link>
-              <Link to="/blog" className="text-sm font-medium hover:text-primary transition-colors">
-                Blog
-              </Link>
-              <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors">
-                About
-              </Link>
-              <Link to="/contact" className="text-sm font-medium hover:text-primary transition-colors">
-                Contact
-              </Link>
-            </nav>
-
-            {/* Phone Number */}
-            <div className="flex items-center gap-2 text-sm">
-              <Phone className="h-4 w-4 text-primary" />
-              <span className="font-medium">+91 98765-43210</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="border-t bg-background md:hidden">
-          <div className="container mx-auto space-y-4 px-4 py-4">
-            {/* Mobile Search */}
+          <div className="container mx-auto space-y-3 px-4 py-4">
             <form onSubmit={handleSearch} className="flex gap-2">
               <Input
                 type="text"
@@ -192,60 +139,18 @@ export const Navbar = () => {
                 <Search className="h-4 w-4" />
               </Button>
             </form>
-
-            <Link
-              to="/"
-              className="block text-sm font-medium transition-colors hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              to="/products"
-              className="block text-sm font-medium transition-colors hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Products
-            </Link>
-            <Link
-              to="/blog"
-              className="block text-sm font-medium transition-colors hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Blog
-            </Link>
-            <Link
-              to="/about"
-              className="block text-sm font-medium transition-colors hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About
-            </Link>
+            <Link to="/" className="block text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>Home</Link>
+            <Link to="/products" className="block text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>Products</Link>
+            <Link to="/blog" className="block text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>Blog</Link>
+            <Link to="/about" className="block text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>About</Link>
+            <Link to="/contact" className="block text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>Contact</Link>
             {user ? (
               <>
-                <Link
-                  to="/dashboard"
-                  className="block text-sm font-medium transition-colors hover:text-primary"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  My Account
-                </Link>
-                <Button variant="outline" size="sm" onClick={handleLogout} className="w-full">
-                  Logout
-                </Button>
+                <Link to="/dashboard" className="block text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>My Account</Link>
+                <Button variant="outline" size="sm" onClick={handleLogout} className="w-full">Logout</Button>
               </>
             ) : (
-              <Button
-                variant="default"
-                size="sm"
-                onClick={() => {
-                  navigate("/auth");
-                  setIsMenuOpen(false);
-                }}
-                className="w-full"
-              >
-                Login
-              </Button>
+              <Button variant="default" size="sm" onClick={() => { navigate("/auth"); setIsMenuOpen(false); }} className="w-full">Login</Button>
             )}
           </div>
         </div>

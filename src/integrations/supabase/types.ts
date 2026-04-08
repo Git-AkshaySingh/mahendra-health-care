@@ -308,14 +308,20 @@ export type Database = {
           description: string | null
           discount_percent: number | null
           dosage: string | null
+          form: string | null
           id: string
           image_url: string | null
           manufacturer: string | null
           name: string
+          pack_size: number | null
+          pack_type: string | null
           price: number
           qr_code_url: string | null
+          salt: string | null
           side_effects: string | null
           stock_quantity: number
+          strength_unit: string | null
+          strength_value: number | null
           updated_at: string | null
           usage_instructions: string | null
         }
@@ -325,14 +331,20 @@ export type Database = {
           description?: string | null
           discount_percent?: number | null
           dosage?: string | null
+          form?: string | null
           id?: string
           image_url?: string | null
           manufacturer?: string | null
           name: string
+          pack_size?: number | null
+          pack_type?: string | null
           price?: number
           qr_code_url?: string | null
+          salt?: string | null
           side_effects?: string | null
           stock_quantity?: number
+          strength_unit?: string | null
+          strength_value?: number | null
           updated_at?: string | null
           usage_instructions?: string | null
         }
@@ -342,14 +354,20 @@ export type Database = {
           description?: string | null
           discount_percent?: number | null
           dosage?: string | null
+          form?: string | null
           id?: string
           image_url?: string | null
           manufacturer?: string | null
           name?: string
+          pack_size?: number | null
+          pack_type?: string | null
           price?: number
           qr_code_url?: string | null
+          salt?: string | null
           side_effects?: string | null
           stock_quantity?: number
+          strength_unit?: string | null
+          strength_value?: number | null
           updated_at?: string | null
           usage_instructions?: string | null
         }
