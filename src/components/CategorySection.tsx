@@ -1,77 +1,32 @@
 import { Link } from "react-router-dom";
-import { Pill, Heart, Activity, Leaf, Sparkles, Baby, Dog } from "lucide-react";
+import { Heart, Activity, Leaf, Baby, Apple, Sparkles } from "lucide-react";
 
 const categories = [
-  {
-    icon: Pill,
-    label: "Medicines",
-    slug: "medicines",
-    bgColor: "bg-blue-50",
-    iconColor: "text-blue-600",
-  },
-  {
-    icon: Heart,
-    label: "Diabetes",
-    slug: "diabetes",
-    bgColor: "bg-rose-50",
-    iconColor: "text-rose-600",
-  },
-  {
-    icon: Activity,
-    label: "Pain Relief",
-    slug: "pain-relief",
-    bgColor: "bg-amber-50",
-    iconColor: "text-amber-600",
-  },
-  {
-    icon: Leaf,
-    label: "Ayurveda",
-    slug: "ayurveda",
-    bgColor: "bg-green-50",
-    iconColor: "text-green-600",
-  },
-  {
-    icon: Sparkles,
-    label: "Personal Care",
-    slug: "personal-care",
-    bgColor: "bg-purple-50",
-    iconColor: "text-purple-600",
-  },
-  {
-    icon: Baby,
-    label: "Baby Care",
-    slug: "baby-care",
-    bgColor: "bg-pink-50",
-    iconColor: "text-pink-600",
-  },
-  {
-    icon: Dog,
-    label: "Pet Care",
-    slug: "pet-care",
-    bgColor: "bg-cyan-50",
-    iconColor: "text-cyan-600",
-  },
+  { icon: Activity, label: "Diabetes", slug: "diabetes", color: "text-primary" },
+  { icon: Heart, label: "Heart Care", slug: "heart-care", color: "text-rose-600" },
+  { icon: Leaf, label: "Ayurveda", slug: "ayurveda", color: "text-green-600" },
+  { icon: Baby, label: "Baby Care", slug: "baby-care", color: "text-pink-500" },
+  { icon: Apple, label: "Nutrition", slug: "nutrition", color: "text-orange-500" },
+  { icon: Sparkles, label: "Personal Care", slug: "personal-care", color: "text-purple-500" },
 ];
 
 export const CategorySection = () => {
   return (
-    <section className="py-6 bg-background">
+    <div className="bg-muted/30 border-b border-border">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-center gap-3 md:gap-6">
-          {categories.map((category, index) => (
+        <div className="flex items-center justify-center gap-2 md:gap-6 py-3 overflow-x-auto">
+          {categories.map((cat) => (
             <Link
-              key={index}
-              to={`/products?category=${category.slug}`}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl ${category.bgColor} border border-border/50 hover:shadow-md transition-all hover:scale-105 min-w-[140px]`}
+              key={cat.slug}
+              to={`/products?category=${cat.slug}`}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-background hover:shadow-sm transition-all text-sm font-medium text-foreground whitespace-nowrap"
             >
-              <div className={`p-2 rounded-lg bg-white shadow-sm`}>
-                <category.icon className={`h-5 w-5 ${category.iconColor}`} />
-              </div>
-              <span className="font-medium text-foreground text-sm">{category.label}</span>
+              <cat.icon className={`h-4 w-4 ${cat.color}`} />
+              {cat.label}
             </Link>
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
