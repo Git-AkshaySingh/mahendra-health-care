@@ -13,6 +13,8 @@ const Checkout = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const shipping = totalPrice >= 500 ? 0 : 50;
+
   const handleCheckout = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -81,13 +83,13 @@ const Checkout = () => {
                       <Input id="city" required />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="zip">ZIP Code</Label>
+                      <Label htmlFor="zip">PIN Code</Label>
                       <Input id="zip" required />
                     </div>
                   </div>
 
                   <Button type="submit" className="w-full mt-6">
-                    Place Order - ${totalPrice.toFixed(2)}
+                    Place Order - ₹{(totalPrice + shipping).toFixed(2)}
                   </Button>
                 </form>
               </CardContent>
@@ -105,7 +107,7 @@ const Checkout = () => {
                       <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                     </div>
                     <p className="font-semibold">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ₹{(item.price * item.quantity).toFixed(2)}
                     </p>
                   </div>
                 ))}
@@ -113,15 +115,15 @@ const Checkout = () => {
                 <div className="border-t pt-4 space-y-2">
                   <div className="flex justify-between">
                     <span>Subtotal:</span>
-                    <span>${totalPrice.toFixed(2)}</span>
+                    <span>₹{totalPrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping:</span>
-                    <span>$5.00</span>
+                    <span>{shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}</span>
                   </div>
                   <div className="flex justify-between text-lg font-bold border-t pt-2">
                     <span>Total:</span>
-                    <span>${(totalPrice + 5).toFixed(2)}</span>
+                    <span>₹{(totalPrice + shipping).toFixed(2)}</span>
                   </div>
                 </div>
               </CardContent>

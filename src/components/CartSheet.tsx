@@ -53,7 +53,7 @@ export const CartSheet = () => {
                     <div className="flex-1 space-y-2">
                       <h4 className="font-medium line-clamp-1">{item.name}</h4>
                       <p className="text-sm font-semibold text-primary">
-                        ${item.price.toFixed(2)}
+                        ₹{item.price.toFixed(2)}
                       </p>
                       <div className="flex items-center gap-2">
                         <Button
@@ -90,7 +90,7 @@ export const CartSheet = () => {
               <div className="border-t pt-4 space-y-4">
                 <div className="flex justify-between text-lg font-semibold">
                   <span>Total:</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>₹{totalPrice.toFixed(2)}</span>
                 </div>
                 <Button className="w-full" onClick={() => navigate("/checkout")}>
                   Proceed to Checkout
