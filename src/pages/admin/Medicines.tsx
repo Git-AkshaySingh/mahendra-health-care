@@ -312,7 +312,7 @@ const Medicines = () => {
               <TableRow key={medicine.id}>
                 <TableCell className="font-medium">{medicine.name}</TableCell>
                 <TableCell>{medicine.categories?.name || "N/A"}</TableCell>
-                <TableCell>${medicine.price}</TableCell>
+                <TableCell>₹{medicine.price}</TableCell>
                 <TableCell>{medicine.stock_quantity}</TableCell>
                 <TableCell>{medicine.manufacturer || "N/A"}</TableCell>
                 <TableCell className="text-right">
