@@ -15,19 +15,22 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { medicines } = await req.json();
+    const body = await req.json();
+    
+    // Support both medicines and products arrays
+    const items = body.medicines || body.products;
 
-    if (!medicines || !Array.isArray(medicines)) {
-      return new Response(JSON.stringify({ error: "medicines array required" }), {
+    if (!items || !Array.isArray(items)) {
+      return new Response(JSON.stringify({ error: "medicines or products array required" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const rows = medicines.map((m: any) => ({
+    const rows = items.map((m: any) => ({
       name: m.name,
-      price: 0,
-      category: "medicines",
+      price: m.price || 0,
+      category: m.category || "General",
       manufacturer: m.manufacturer || null,
       dosage: m.dosage || null,
       description: m.description || null,
@@ -37,19 +40,26 @@ Deno.serve(async (req) => {
       strength_unit: m.strength_unit || null,
       pack_size: m.pack_size || null,
       pack_type: m.pack_type || null,
-      stock_quantity: 100,
+      stock_quantity: m.stock_quantity || 100,
     }));
 
-    const { data, error } = await supabase.from("products").insert(rows);
+    // Insert in batches of 500
+    const batchSize = 500;
+    let totalInserted = 0;
 
-    if (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    for (let i = 0; i < rows.length; i += batchSize) {
+      const batch = rows.slice(i, i + batchSize);
+      const { error } = await supabase.from("products").insert(batch);
+      if (error) {
+        return new Response(JSON.stringify({ error: error.message, inserted: totalInserted }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      totalInserted += batch.length;
     }
 
-    return new Response(JSON.stringify({ success: true, count: rows.length }), {
+    return new Response(JSON.stringify({ success: true, count: totalInserted }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
