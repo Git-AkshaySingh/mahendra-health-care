@@ -377,14 +377,14 @@ const Products = () => {
             {/* Products Grid */}
             <div className="flex-1 min-w-0">
               {isLoading ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {[...Array(PAGE_SIZE)].map((_, i) => (
-                    <div key={i} className="h-48 bg-muted animate-pulse rounded-lg" />
+                <div className="space-y-3">
+                  {[...Array(8)].map((_, i) => (
+                    <div key={i} className="h-28 bg-muted animate-pulse rounded-xl" />
                   ))}
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  <div className="space-y-3">
                     {products.map((product) => {
                       const isExpanded = expandedProducts.has(product.id);
                       const discountedPrice = product.discount_percent
@@ -392,85 +392,83 @@ const Products = () => {
                         : product.price;
 
                       return (
-                        <div key={product.id} className="border border-border rounded-lg bg-card flex flex-col overflow-hidden hover:shadow-md transition-shadow">
-                          {/* Product image placeholder or actual image */}
-                          {product.image_url ? (
-                            <div className="aspect-square bg-muted/30 flex items-center justify-center p-3">
-                              <img src={product.image_url} alt={product.name} className="max-h-full max-w-full object-contain" />
-                            </div>
-                          ) : (
-                            <div className="aspect-square bg-muted/20 flex items-center justify-center">
-                              <div className="text-center px-3">
-                                <div className="w-12 h-12 mx-auto mb-1 bg-primary/10 rounded-lg flex items-center justify-center">
-                                  <span className="text-primary text-lg font-bold">{product.name?.charAt(0)}</span>
-                                </div>
-                                {product.form && (
-                                  <span className="text-[10px] text-muted-foreground uppercase tracking-wide">{product.form}</span>
-                                )}
-                              </div>
-                            </div>
-                          )}
-
-                          <div className="p-3 flex-1 flex flex-col">
-                            {/* Discount badge */}
-                            {product.discount_percent && product.discount_percent > 0 && (
-                              <span className="inline-block self-start text-[10px] font-semibold text-green-700 bg-green-100 px-1.5 py-0.5 rounded mb-1">
-                                {product.discount_percent}% off
-                              </span>
-                            )}
-
-                            <h3 className="text-xs font-medium text-foreground line-clamp-2 mb-1 leading-tight">
-                              {product.name}
-                            </h3>
-
-                            {product.manufacturer && (
-                              <p className="text-[10px] text-muted-foreground mb-1 truncate">{product.manufacturer}</p>
-                            )}
-
-                            {/* Price */}
-                            <div className="mt-auto pt-1">
-                              <div className="flex items-baseline gap-1.5 flex-wrap">
-                                <span className="text-sm font-bold text-foreground">₹{discountedPrice.toFixed(0)}</span>
-                                {product.discount_percent > 0 && (
-                                  <>
-                                    <span className="text-[10px] text-muted-foreground line-through">₹{product.price.toFixed(0)}</span>
-                                    <span className="text-[10px] text-green-600 font-medium">{product.discount_percent}% off</span>
-                                  </>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Know More */}
-                            <Collapsible open={isExpanded} onOpenChange={() => toggleProductExpand(product.id)}>
-                              <CollapsibleTrigger className="flex items-center gap-0.5 text-[11px] text-primary hover:underline font-medium mt-1">
-                                Know More {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-                              </CollapsibleTrigger>
-                              <CollapsibleContent className="mt-2 pt-2 border-t border-border text-[11px] space-y-1">
-                                {product.salt && <div><span className="font-medium">Salt:</span> <span className="text-muted-foreground">{product.salt}</span></div>}
-                                {product.form && <div><span className="font-medium">Form:</span> <span className="text-muted-foreground">{product.form}</span></div>}
-                                {product.pack_size && <div><span className="font-medium">Pack:</span> <span className="text-muted-foreground">{product.pack_size} {product.pack_type || "units"}</span></div>}
-                                {product.dosage && <div><span className="font-medium">Dosage:</span> <span className="text-muted-foreground">{product.dosage}</span></div>}
-                                {product.usage_instructions && <div><span className="font-medium">Usage:</span> <span className="text-muted-foreground">{product.usage_instructions}</span></div>}
-                                {product.side_effects && <div><span className="font-medium">Side Effects:</span> <span className="text-muted-foreground">{product.side_effects}</span></div>}
-                                <div><span className="font-medium">Category:</span> <span className="text-muted-foreground">{product.category}</span></div>
+                        <div key={product.id} className="border border-border rounded-xl bg-card p-4 hover:shadow-md transition-shadow">
+                          <div className="flex flex-col md:flex-row md:items-start gap-4">
+                            {/* Product Info */}
+                            <div className="flex-1">
+                              <div className="flex items-start justify-between mb-2">
                                 <div>
-                                  <span className="font-medium">Stock:</span>{" "}
-                                  <span className={product.stock_quantity > 0 ? "text-green-600" : "text-destructive"}>
-                                    {product.stock_quantity > 0 ? "In Stock" : "Out of Stock"}
-                                  </span>
+                                  <h3 className="font-semibold text-base text-foreground">{product.name}</h3>
+                                  {product.manufacturer && (
+                                    <p className="text-xs text-muted-foreground">by {product.manufacturer}</p>
+                                  )}
+                                  {product.salt && (
+                                    <p className="text-xs text-muted-foreground mt-0.5">Salt: {product.salt}</p>
+                                  )}
                                 </div>
-                              </CollapsibleContent>
-                            </Collapsible>
+                                <div className="text-right flex-shrink-0 ml-4">
+                                  <div className="flex items-center gap-2">
+                                    {product.discount_percent > 0 && (
+                                      <span className="text-sm text-muted-foreground line-through">₹{product.price.toFixed(0)}</span>
+                                    )}
+                                    <span className="text-xl font-bold text-primary">₹{discountedPrice.toFixed(0)}</span>
+                                  </div>
+                                  {product.discount_percent > 0 && (
+                                    <span className="text-xs font-medium text-green-600">{product.discount_percent}% OFF</span>
+                                  )}
+                                </div>
+                              </div>
 
-                            {/* Add button */}
-                            <Button
-                              size="sm"
-                              className="w-full mt-2 h-8 text-xs font-semibold"
-                              onClick={() => handleAddToCart(product)}
-                              disabled={product.stock_quantity === 0}
-                            >
-                              Add
-                            </Button>
+                              <p className="text-sm text-muted-foreground mb-2 line-clamp-1">
+                                {product.description || (product.form ? `${product.form}${product.pack_size ? ` · Pack of ${product.pack_size}` : ""}` : "Quality healthcare product")}
+                              </p>
+
+                              {/* Know More Collapsible */}
+                              <Collapsible open={isExpanded} onOpenChange={() => toggleProductExpand(product.id)}>
+                                <CollapsibleTrigger className="flex items-center gap-1 text-sm text-primary hover:underline font-medium">
+                                  Know More {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                                </CollapsibleTrigger>
+                                <CollapsibleContent className="mt-3 pt-3 border-t border-border">
+                                  <div className="grid gap-1.5 text-sm">
+                                    {product.salt && <div><span className="font-medium text-foreground">Salt/Composition:</span> <span className="text-muted-foreground">{product.salt}</span></div>}
+                                    {product.form && <div><span className="font-medium text-foreground">Form:</span> <span className="text-muted-foreground">{product.form}</span></div>}
+                                    {product.pack_size && <div><span className="font-medium text-foreground">Pack Size:</span> <span className="text-muted-foreground">{product.pack_size} {product.pack_type || "units"}</span></div>}
+                                    {product.description && <div><span className="font-medium text-foreground">Description:</span> <span className="text-muted-foreground">{product.description}</span></div>}
+                                    {product.dosage && <div><span className="font-medium text-foreground">Dosage:</span> <span className="text-muted-foreground">{product.dosage}</span></div>}
+                                    {product.usage_instructions && <div><span className="font-medium text-foreground">Usage:</span> <span className="text-muted-foreground">{product.usage_instructions}</span></div>}
+                                    {product.side_effects && <div><span className="font-medium text-foreground">Side Effects:</span> <span className="text-muted-foreground">{product.side_effects}</span></div>}
+                                    <div><span className="font-medium text-foreground">Category:</span> <span className="text-muted-foreground">{product.category}</span></div>
+                                    <div>
+                                      <span className="font-medium text-foreground">Stock:</span>{" "}
+                                      <span className={product.stock_quantity > 0 ? "text-green-600" : "text-destructive"}>
+                                        {product.stock_quantity > 0 ? `${product.stock_quantity} available` : "Out of Stock"}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </CollapsibleContent>
+                              </Collapsible>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex md:flex-col gap-2 md:w-32 flex-shrink-0">
+                              <Button
+                                variant="outline"
+                                className="flex-1 gap-2"
+                                onClick={() => handleAddToCart(product)}
+                                disabled={product.stock_quantity === 0}
+                              >
+                                <ShoppingCart className="h-4 w-4" />
+                                Add to Cart
+                              </Button>
+                              <Button
+                                className="flex-1 gap-2"
+                                onClick={() => handleBuyNow(product)}
+                                disabled={product.stock_quantity === 0}
+                              >
+                                <Zap className="h-4 w-4" />
+                                Buy
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       );
