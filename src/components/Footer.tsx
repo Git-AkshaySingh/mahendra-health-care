@@ -6,24 +6,6 @@ export const Footer = () => {
     <footer className="border-t bg-muted/30">
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
-          {/* Get the App */}
-          <div>
-            <h4 className="font-bold text-foreground mb-4">Get the App</h4>
-            <p className="text-sm text-muted-foreground mb-4">
-              Experience faster ordering and real-time tracking on our mobile platform.
-            </p>
-            <div className="space-y-2">
-              <div className="bg-foreground text-background rounded-lg px-4 py-2 text-sm font-medium inline-flex items-center gap-2 w-full max-w-[200px]">
-                <span className="text-xs">GET IT ON</span>
-                <span className="font-bold">Google Play</span>
-              </div>
-              <div className="bg-foreground text-background rounded-lg px-4 py-2 text-sm font-medium inline-flex items-center gap-2 w-full max-w-[200px]">
-                <span className="text-xs">DOWNLOAD ON THE</span>
-                <span className="font-bold">App Store</span>
-              </div>
-            </div>
-          </div>
-
           {/* About MHC */}
           <div>
             <h4 className="font-bold text-foreground mb-4">About MHC</h4>
@@ -67,6 +49,24 @@ export const Footer = () => {
             <div className="mt-4">
               <p className="text-[10px] font-bold tracking-wider text-muted-foreground uppercase">LICENSED PHARMACY</p>
               <p className="text-xs text-muted-foreground">Reg: MHC-994700-IND</p>
+            </div>
+          </div>
+
+          {/* Get the App - Right side */}
+          <div>
+            <h4 className="font-bold text-foreground mb-4">Get the App</h4>
+            <p className="text-sm text-muted-foreground mb-4">
+              Experience faster ordering and real-time tracking on our mobile platform.
+            </p>
+            <div className="space-y-2">
+              <div className="bg-foreground text-background rounded-lg px-4 py-2 text-sm font-medium inline-flex items-center gap-2 w-full max-w-[200px]">
+                <span className="text-xs">GET IT ON</span>
+                <span className="font-bold">Google Play</span>
+              </div>
+              <div className="bg-foreground text-background rounded-lg px-4 py-2 text-sm font-medium inline-flex items-center gap-2 w-full max-w-[200px]">
+                <span className="text-xs">DOWNLOAD ON THE</span>
+                <span className="font-bold">App Store</span>
+              </div>
             </div>
           </div>
         </div>
