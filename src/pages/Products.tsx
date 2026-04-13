@@ -44,6 +44,15 @@ const Products = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Sync URL search param
+  useEffect(() => {
+    if (urlSearch && urlSearch !== searchTerm) {
+      setSearchTerm(urlSearch);
+      setDebouncedSearch(urlSearch);
+      setCurrentPage(1);
+    }
+  }, [urlSearch]);
+
   // Debounce search
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
