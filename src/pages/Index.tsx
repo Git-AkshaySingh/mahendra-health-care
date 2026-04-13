@@ -2,9 +2,11 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CategorySection } from "@/components/CategorySection";
 import { HeroSection } from "@/components/HeroSection";
-import { ClinicalEssentials } from "@/components/ClinicalEssentials";
+import { FeaturedProducts } from "@/components/FeaturedProducts";
+import { PromoBannerStrip } from "@/components/PromoBannerStrip";
 import { ExclusiveServices } from "@/components/ExclusiveServices";
-import { CosmeticWellness } from "@/components/CosmeticWellness";
+import { EssentialCarePicks } from "@/components/EssentialCarePicks";
+import { BentoAdsSection } from "@/components/BentoAdsSection";
 import { NewsletterSection } from "@/components/NewsletterSection";
 
 const Index = () => {
@@ -15,9 +17,11 @@ const Index = () => {
 
       <main className="flex-1">
         <HeroSection />
-        <ClinicalEssentials />
+        <FeaturedProducts />
+        <PromoBannerStrip />
         <ExclusiveServices />
-        <CosmeticWellness />
+        <EssentialCarePicks />
+        <BentoAdsSection />
         <NewsletterSection />
       </main>
 
