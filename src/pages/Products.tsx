@@ -22,7 +22,7 @@ const Products = () => {
   const [searchParams] = useSearchParams();
   const urlSearch = searchParams.get("search") || "";
   const [searchTerm, setSearchTerm] = useState(urlSearch);
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(urlSearch);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedManufacturers, setSelectedManufacturers] = useState<string[]>([]);
   const [selectedForms, setSelectedForms] = useState<string[]>([]);
