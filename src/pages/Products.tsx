@@ -27,7 +27,7 @@ const Products = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
   const [expandedProducts, setExpandedProducts] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState("relevance");
+  const [sortBy, setSortBy] = useState("name_asc");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   // Filter section open states
@@ -102,16 +102,16 @@ const Products = () => {
         query = query.in("form", selectedForms);
       }
       if (debouncedSearch) {
-        query = query.or(`name.ilike.%${debouncedSearch}%,salt.ilike.%${debouncedSearch}%,manufacturer.ilike.%${debouncedSearch}%`);
+        // Search primarily by product name for most relevant results
+        query = query.ilike("name", `%${debouncedSearch}%`);
       }
       query = query.gte("price", priceRange[0]).lte("price", priceRange[1]);
 
-      // Sort
+      // Sort - default A-Z by name
       if (sortBy === "price_low") query = query.order("price", { ascending: true });
       else if (sortBy === "price_high") query = query.order("price", { ascending: false });
-      else if (sortBy === "name_asc") query = query.order("name", { ascending: true });
       else if (sortBy === "discount") query = query.order("discount_percent", { ascending: false });
-      else query = query.order("created_at", { ascending: false });
+      else query = query.order("name", { ascending: true });
 
       query = query.range(from, to);
 
