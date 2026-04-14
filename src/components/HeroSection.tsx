@@ -2,31 +2,47 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroSlide1 from "@/assets/hero-slide-1.png";
-import heroSlide2 from "@/assets/hero-slide-2.jpg";
-import heroSlide3 from "@/assets/hero-slide-3.png";
+import heroSkincare from "@/assets/hero-skincare.jpg";
+import heroWellness from "@/assets/hero-wellness.jpg";
+import heroPetcare from "@/assets/hero-petcare.jpg";
+import heroAyurveda from "@/assets/hero-ayurveda.jpg";
+import heroLakme from "@/assets/hero-lakme.webp";
 
 const slides = [
   {
-    image: heroSlide1,
-    title: "Healthcare Excellence, Delivered.",
-    description: "Trusted by Dehradun families since 1994. Genuine medicines, expert advice, and doorstep delivery.",
-    buttonText: "Order Now",
+    image: heroSkincare,
+    title: "Glow With Confidence",
+    description: "Premium skincare essentials for radiant, healthy skin. Trusted brands, doorstep delivery.",
+    buttonText: "Shop Skincare",
     buttonLink: "/products",
   },
   {
-    image: heroSlide2,
-    title: "Flat 25% Off on Wellness Essentials",
-    description: "Save on vitamins, supplements and daily health products. Quality you can trust.",
-    buttonText: "Shop Now",
+    image: heroWellness,
+    title: "Your Daily Wellness, Simplified",
+    description: "Vitamins, supplements & health essentials — everything your body needs, in one place.",
+    buttonText: "Explore Wellness",
     buttonLink: "/products",
   },
   {
-    image: heroSlide3,
-    title: "Ayurveda & Natural Healing",
-    description: "Discover the power of ancient remedies with our curated collection of herbal wellness products.",
-    buttonText: "Explore",
+    image: heroLakme,
+    title: "Beauty Meets Science",
+    description: "Discover premium cosmetics and beauty products from the brands you love and trust.",
+    buttonText: "Shop Beauty",
+    buttonLink: "/products",
+  },
+  {
+    image: heroAyurveda,
+    title: "Ancient Wisdom, Modern Care",
+    description: "Harness the power of Ayurveda with our curated herbal and natural wellness range.",
+    buttonText: "Explore Ayurveda",
     buttonLink: "/products?category=ayurveda",
+  },
+  {
+    image: heroPetcare,
+    title: "Happy Pets, Happy You",
+    description: "Premium nutrition and grooming products for your furry family members.",
+    buttonText: "Shop Pet Care",
+    buttonLink: "/products?category=pets",
   },
 ];
 
@@ -45,7 +61,7 @@ export const HeroSection = () => {
 
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="relative h-[50vh] md:h-[65vh] lg:h-[72vh]">
+      <div className="relative h-[55vh] md:h-[65vh] lg:h-[72vh]">
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -57,6 +73,8 @@ export const HeroSection = () => {
               src={slide.image}
               alt={slide.title}
               className="w-full h-full object-cover"
+              width={1920}
+              height={1080}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/30 to-transparent" />
             <div className="absolute inset-0 flex items-center">
