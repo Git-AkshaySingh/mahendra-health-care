@@ -58,7 +58,7 @@ export const Footer = () => {
             <p className="text-sm text-muted-foreground mb-4">
               Experience faster ordering and real-time tracking on our mobile platform.
             </p>
-            <div className="space-y-2">
+            <div className="space-y-2 mb-5">
               <div className="bg-foreground text-background rounded-lg px-4 py-2 text-sm font-medium inline-flex items-center gap-2 w-full max-w-[200px]">
                 <span className="text-xs">GET IT ON</span>
                 <span className="font-bold">Google Play</span>
@@ -68,19 +68,21 @@ export const Footer = () => {
                 <span className="font-bold">App Store</span>
               </div>
             </div>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5">
+                <Shield className="h-3.5 w-3.5 text-primary" /> Secure Payment
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <CheckCircle className="h-3.5 w-3.5 text-accent" /> Verified Experts
+              </span>
+            </div>
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t flex flex-col md:flex-row items-center justify-between text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Mahendra Health Care. All rights reserved.</p>
-          <div className="flex items-center gap-4 mt-2 md:mt-0">
-            <span className="inline-flex items-center gap-1">
-              <Shield className="h-3.5 w-3.5" /> Secure Payment
-            </span>
-            <span className="inline-flex items-center gap-1">
-              <CheckCircle className="h-3.5 w-3.5" /> Verified Experts
-            </span>
-          </div>
+        <div className="mt-10 pt-6 border-t">
+          <p className="text-sm text-muted-foreground text-center">
+            © {new Date().getFullYear()} Mahendra Health Care. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
