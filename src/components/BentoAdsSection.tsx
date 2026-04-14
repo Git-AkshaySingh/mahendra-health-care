@@ -1,74 +1,114 @@
 import { Link } from "react-router-dom";
-import { Stethoscope, FlaskConical, Tag, Crown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import heroLakme from "@/assets/hero-lakme.webp";
+import brandCatfood from "@/assets/brand-catfood.jpg";
+import brandSupplementsBanner from "@/assets/brand-supplements-banner.jpg";
+import brandDroolsProducts from "@/assets/brand-drools-products.jpg";
+import brandNiveaGlow from "@/assets/brand-nivea-glow.jpg";
 
 export const BentoAdsSection = () => {
   return (
     <section className="py-14">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold text-foreground mb-8">Health & Wellness Offers</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 auto-rows-[160px] md:auto-rows-[180px]">
-          {/* Large card - solid accent/green bg */}
+        <h2 className="text-2xl font-bold text-foreground mb-8">Deals & Highlights</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[160px] md:auto-rows-[190px]">
+          {/* Large card - premium brand lifestyle */}
           <Link
             to="/products"
-            className="col-span-2 row-span-2 bg-accent rounded-2xl p-8 flex flex-col justify-end hover:shadow-[var(--shadow-elevated)] transition-shadow relative overflow-hidden group shadow-[var(--shadow-card)]"
+            className="col-span-2 row-span-2 rounded-2xl overflow-hidden relative group shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow"
           >
-            <Stethoscope className="absolute top-6 right-6 h-20 w-20 text-accent-foreground/15 group-hover:text-accent-foreground/25 transition-colors" />
-            <span className="text-[10px] font-bold tracking-wider text-accent-foreground/80 uppercase">HEALTH CHECKUPS</span>
-            <h3 className="text-2xl font-bold text-accent-foreground mt-2 leading-snug">
-              Complete Health<br />Packages from ₹999
-            </h3>
-            <p className="text-accent-foreground/70 text-sm mt-2 max-w-xs">
-              60+ parameters tested. Reports in 24 hours. Home sample collection available.
-            </p>
-            <span className="mt-4 inline-flex items-center bg-accent-foreground text-accent text-sm font-medium px-5 py-2 rounded-xl w-fit hover:bg-accent-foreground/90 transition-colors">
-              Book Now
-            </span>
-          </Link>
-
-          {/* Medium card - solid primary/blue bg */}
-          <Link
-            to="/products"
-            className="col-span-1 bg-primary rounded-2xl p-5 flex flex-col justify-between hover:shadow-[var(--shadow-elevated)] transition-shadow shadow-[var(--shadow-card)]"
-          >
-            <FlaskConical className="h-8 w-8 text-primary-foreground/40" />
-            <div>
-              <h4 className="font-bold text-primary-foreground text-sm">Lab Tests</h4>
-              <p className="text-primary-foreground/70 text-xs mt-1">Starting ₹149</p>
+            <img
+              src={heroLakme}
+              alt="Premium beauty collection"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-6 md:p-8">
+              <span className="text-[10px] font-bold tracking-wider text-white/70 uppercase">Premium Collection</span>
+              <h3 className="text-xl md:text-2xl font-bold text-white mt-1 leading-snug">
+                Beauty & Skincare Essentials
+              </h3>
+              <p className="text-white/70 text-sm mt-2 max-w-xs hidden md:block">
+                Discover premium cosmetics from trusted brands.
+              </p>
+              <span className="mt-3 inline-flex items-center text-white text-sm font-medium gap-1 hover:gap-2 transition-all">
+                Shop Now <ArrowRight className="h-4 w-4" />
+              </span>
             </div>
           </Link>
 
-          {/* Medium card - solid secondary/orange bg */}
+          {/* Medium card - supplements */}
           <Link
             to="/products"
-            className="col-span-1 bg-secondary rounded-2xl p-5 flex flex-col justify-between hover:shadow-[var(--shadow-elevated)] transition-shadow shadow-[var(--shadow-card)]"
+            className="col-span-1 rounded-2xl overflow-hidden relative group shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow"
           >
-            <Tag className="h-8 w-8 text-secondary-foreground/40" />
-            <div>
-              <h4 className="font-bold text-secondary-foreground text-sm">Flat 30% Off</h4>
-              <p className="text-secondary-foreground/70 text-xs mt-1">On first order</p>
+            <img
+              src={brandSupplementsBanner}
+              alt="Supplements and protein"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-4">
+              <h4 className="font-bold text-white text-sm">Supplements</h4>
+              <p className="text-white/70 text-xs mt-0.5">Up to 40% Off</p>
             </div>
           </Link>
 
-          {/* Small card - white card */}
+          {/* Medium card - cat food */}
           <Link
-            to="/products"
-            className="col-span-1 bg-card border border-border rounded-2xl p-5 flex flex-col justify-between hover:shadow-[var(--shadow-elevated)] transition-shadow shadow-[var(--shadow-card)]"
+            to="/products?category=pets"
+            className="col-span-1 rounded-2xl overflow-hidden relative group shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow"
           >
-            <Crown className="h-8 w-8 text-primary/40" />
-            <div>
-              <h4 className="font-bold text-foreground text-sm">MHC Premium</h4>
-              <p className="text-muted-foreground text-xs mt-1">Free delivery forever</p>
+            <img
+              src={brandCatfood}
+              alt="Cat food and pet nutrition"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-4">
+              <h4 className="font-bold text-white text-sm">Pet Nutrition</h4>
+              <p className="text-white/70 text-xs mt-0.5">20% Cashback</p>
             </div>
           </Link>
 
-          {/* Small card - white card */}
-          <div className="col-span-1 bg-card border border-border rounded-2xl p-5 flex flex-col justify-between shadow-[var(--shadow-card)]">
-            <div className="text-3xl font-black text-secondary">15%</div>
-            <div>
-              <h4 className="font-bold text-foreground text-sm">Senior Citizen</h4>
-              <p className="text-muted-foreground text-xs mt-1">Extra discount always</p>
+          {/* Small card - pet products */}
+          <Link
+            to="/products?category=pets"
+            className="col-span-1 rounded-2xl overflow-hidden relative group shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow"
+          >
+            <img
+              src={brandDroolsProducts}
+              alt="Dog food and treats"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-4">
+              <h4 className="font-bold text-white text-sm">Dog Care</h4>
+              <p className="text-white/70 text-xs mt-0.5">Top Brands</p>
             </div>
-          </div>
+          </Link>
+
+          {/* Small card - skincare */}
+          <Link
+            to="/products"
+            className="col-span-1 rounded-2xl overflow-hidden relative group shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow"
+          >
+            <img
+              src={brandNiveaGlow}
+              alt="Skincare and glow products"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-4">
+              <h4 className="font-bold text-white text-sm">Glow Essentials</h4>
+              <p className="text-white/70 text-xs mt-0.5">New Arrivals</p>
+            </div>
+          </Link>
         </div>
       </div>
     </section>

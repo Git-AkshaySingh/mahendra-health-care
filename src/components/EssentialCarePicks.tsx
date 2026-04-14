@@ -2,18 +2,18 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Plus } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
-import cp1 from "@/assets/care-product-1.jpg";
-import cp2 from "@/assets/care-product-2.jpg";
-import cp3 from "@/assets/care-product-3.jpg";
-import cp4 from "@/assets/care-product-4.jpg";
-import cp5 from "@/assets/care-product-5.jpg";
+import prodBodylotion from "@/assets/prod-bodylotion.jpg";
+import prodHairoil from "@/assets/prod-hairoil.jpg";
+import prodPetshampoo from "@/assets/prod-petshampoo.jpg";
+import brandDroolsProducts from "@/assets/brand-drools-products.jpg";
+import brandMbFishoil from "@/assets/brand-mb-fishoil.jpg";
 
 const products = [
-  { id: "cp1", name: "Digital Thermometer", category: "Diagnostics", price: 249, image: cp1 },
-  { id: "cp2", name: "N95 Masks (10pk)", category: "Protection", price: 450, image: cp2 },
-  { id: "cp3", name: "Hand Sanitizer 500ml", category: "Hygiene", price: 120, image: cp3 },
-  { id: "cp4", name: "BP Monitor", category: "Devices", price: 1899, image: cp4 },
-  { id: "cp5", name: "First Aid Kit", category: "Essentials", price: 599, image: cp5 },
+  { id: "cp1", name: "Body Lotion", category: "Beauty", price: 349, image: prodBodylotion },
+  { id: "cp2", name: "Hair Oil Serum", category: "Hair Care", price: 450, image: prodHairoil },
+  { id: "cp3", name: "Pet Shampoo", category: "Pet Care", price: 299, image: prodPetshampoo },
+  { id: "cp4", name: "Pet Food Pack", category: "Pet Nutrition", price: 899, image: brandDroolsProducts },
+  { id: "cp5", name: "Fish Oil 1000mg", category: "Supplements", price: 599, image: brandMbFishoil },
 ];
 
 export const EssentialCarePicks = () => {
@@ -29,8 +29,8 @@ export const EssentialCarePicks = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Essential Care Picks</h2>
-            <p className="text-muted-foreground text-sm mt-1">Medical devices and daily care must-haves.</p>
+            <h2 className="text-2xl font-bold text-foreground">Beauty, Personal & Pet Care</h2>
+            <p className="text-muted-foreground text-sm mt-1">Premium products for you and your furry friends.</p>
           </div>
           <Link to="/products" className="text-sm font-medium text-primary hover:underline inline-flex items-center gap-1">
             View All <ArrowRight className="h-4 w-4" />
@@ -40,12 +40,14 @@ export const EssentialCarePicks = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
           {products.map((item) => (
             <div key={item.id} className="bg-card rounded-2xl overflow-hidden shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow group">
-              <div className="aspect-square bg-muted/20 overflow-hidden">
+              <div className="aspect-square bg-muted/10 overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
+                  width={512}
+                  height={512}
                 />
               </div>
               <div className="p-4">

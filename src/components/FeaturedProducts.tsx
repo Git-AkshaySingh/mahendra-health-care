@@ -2,18 +2,18 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Plus } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
-import fp1 from "@/assets/featured-product-1.jpg";
-import fp2 from "@/assets/featured-product-2.jpg";
-import fp3 from "@/assets/featured-product-3.jpg";
-import fp4 from "@/assets/featured-product-4.jpg";
-import fp5 from "@/assets/featured-product-5.jpg";
+import prodSerum from "@/assets/prod-serum.jpg";
+import prodOmega from "@/assets/prod-omega.jpg";
+import prodAloevera from "@/assets/prod-aloevera.jpg";
+import prodSunscreen from "@/assets/prod-sunscreen.jpg";
+import prodMultivitamin from "@/assets/prod-multivitamin.jpg";
 
 const products = [
-  { id: "fp1", name: "Vitamin C Serum", category: "Skincare", price: 549, image: fp1 },
-  { id: "fp2", name: "Omega-3 Capsules", category: "Supplements", price: 720, image: fp2 },
-  { id: "fp3", name: "Aloe Vera Gel", category: "Wellness", price: 199, image: fp3 },
-  { id: "fp4", name: "SPF 50 Sunscreen", category: "Sun Care", price: 450, image: fp4 },
-  { id: "fp5", name: "Multivitamin Tabs", category: "Daily Health", price: 380, image: fp5 },
+  { id: "fp1", name: "Vitamin C Serum", category: "Skincare", price: 549, image: prodSerum },
+  { id: "fp2", name: "Omega-3 Capsules", category: "Supplements", price: 720, image: prodOmega },
+  { id: "fp3", name: "Aloe Vera Gel", category: "Wellness", price: 199, image: prodAloevera },
+  { id: "fp4", name: "SPF 50 Sunscreen", category: "Sun Care", price: 450, image: prodSunscreen },
+  { id: "fp5", name: "Multivitamin Tabs", category: "Daily Health", price: 380, image: prodMultivitamin },
 ];
 
 export const FeaturedProducts = () => {
@@ -40,12 +40,14 @@ export const FeaturedProducts = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
           {products.map((item) => (
             <div key={item.id} className="bg-card rounded-2xl overflow-hidden shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-elevated)] transition-shadow group">
-              <div className="aspect-square bg-muted/30 overflow-hidden">
+              <div className="aspect-square bg-muted/10 overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
+                  width={512}
+                  height={512}
                 />
               </div>
               <div className="p-4">
