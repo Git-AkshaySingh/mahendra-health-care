@@ -47,8 +47,8 @@ export const Navbar = () => {
 
   const navLinks = [
     { to: "/", label: "Home" },
-    { to: "/products", label: "Products" },
     { to: "/products?category=medicines", label: "Medicines" },
+    { to: "/products", label: "Lab Tests" },
     { to: "/blog", label: "Blog" },
     { to: "/about", label: "About" },
     { to: "/contact", label: "Contact" },

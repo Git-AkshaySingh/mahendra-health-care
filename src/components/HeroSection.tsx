@@ -45,7 +45,7 @@ export const HeroSection = () => {
 
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="relative h-[280px] md:h-[400px] lg:h-[480px]">
+      <div className="relative h-[50vh] md:h-[65vh] lg:h-[72vh]">
         {slides.map((slide, index) => (
           <div
             key={index}
