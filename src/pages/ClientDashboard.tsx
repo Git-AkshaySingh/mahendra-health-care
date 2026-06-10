@@ -546,6 +546,7 @@ const ClientDashboard = () => {
 
           {/* Security Tab */}
           <TabsContent value="security">
+
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
