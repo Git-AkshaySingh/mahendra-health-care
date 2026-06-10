@@ -11,9 +11,10 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { User, Package, FileText, Lock, MapPin, Phone, Mail, Calendar, Upload, Eye } from "lucide-react";
+import { User, Package, FileText, Lock, MapPin, Phone, Mail, Calendar, Upload, Eye, Bell } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
+import { OrderTrackingTimeline } from "@/components/OrderTrackingTimeline";
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
@@ -116,6 +117,23 @@ const ClientDashboard = () => {
         .order('uploaded_at', { ascending: false });
       
       if (error) throw error;
+      return data || [];
+    },
+    enabled: !!user?.id,
+  });
+
+  // Fetch customer notifications
+  const { data: notifications, refetch: refetchNotifications } = useQuery({
+    queryKey: ['customer-notifications', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      const { data } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('audience', 'user')
+        .order('created_at', { ascending: false })
+        .limit(50);
       return data || [];
     },
     enabled: !!user?.id,
@@ -262,7 +280,7 @@ const ClientDashboard = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-2 h-auto p-2">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-2 h-auto p-2">
             <TabsTrigger value="profile" className="flex items-center gap-2 py-3">
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Profile</span>
@@ -274,6 +292,10 @@ const ClientDashboard = () => {
             <TabsTrigger value="prescriptions" className="flex items-center gap-2 py-3">
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">Prescriptions</span>
+            </TabsTrigger>
+            <TabsTrigger value="notifications" className="flex items-center gap-2 py-3">
+              <Bell className="h-4 w-4" />
+              <span className="hidden sm:inline">Alerts</span>
             </TabsTrigger>
             <TabsTrigger value="security" className="flex items-center gap-2 py-3">
               <Lock className="h-4 w-4" />
