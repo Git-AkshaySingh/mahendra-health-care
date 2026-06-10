@@ -6,8 +6,20 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Shield, UserCog } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useDashboardRole } from "./AdminLayout";
+import { ShieldAlert } from "lucide-react";
 
 const Users = () => {
+  const role = useDashboardRole();
+  if (role !== "admin") {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <ShieldAlert className="h-10 w-10 text-muted-foreground mb-3"/>
+        <h2 className="text-xl font-semibold">Permission denied</h2>
+        <p className="text-muted-foreground">User management is restricted to administrators.</p>
+      </div>
+    );
+  }
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
