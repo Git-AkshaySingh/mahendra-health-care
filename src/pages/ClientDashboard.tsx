@@ -466,6 +466,7 @@ const ClientDashboard = () => {
                               </div>
                             ))}
                           </div>
+                          <OrderTrackingTimeline orderId={order.id} currentStatus={(order.status || 'pending').toLowerCase()} />
                         </div>
                       </Card>
                     ))}
