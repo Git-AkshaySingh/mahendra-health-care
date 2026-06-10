@@ -79,9 +79,10 @@ const Orders = () => {
 
   const getStatusBadge = (status: string) => {
     const variants: Record<string, { variant: any; icon: any }> = {
-      pending: { variant: "secondary", icon: Package },
-      approved: { variant: "default", icon: CheckCircle },
-      shipped: { variant: "default", icon: Truck },
+      pending: { variant: "secondary", icon: Clock },
+      confirmed: { variant: "default", icon: CheckCircle },
+      processing: { variant: "default", icon: Package },
+      out_for_delivery: { variant: "default", icon: Truck },
       delivered: { variant: "default", icon: CheckCircle },
       cancelled: { variant: "destructive", icon: XCircle },
     };
@@ -108,8 +109,9 @@ const Orders = () => {
           <SelectContent>
             <SelectItem value="all">All Orders</SelectItem>
             <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="approved">Approved</SelectItem>
-            <SelectItem value="shipped">Shipped</SelectItem>
+            <SelectItem value="confirmed">Confirmed</SelectItem>
+            <SelectItem value="processing">Processing</SelectItem>
+            <SelectItem value="out_for_delivery">Out for Delivery</SelectItem>
             <SelectItem value="delivered">Delivered</SelectItem>
             <SelectItem value="cancelled">Cancelled</SelectItem>
           </SelectContent>
@@ -251,8 +253,9 @@ const Orders = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="approved">Approved</SelectItem>
-                      <SelectItem value="shipped">Shipped</SelectItem>
+                      <SelectItem value="confirmed">Confirmed</SelectItem>
+                      <SelectItem value="processing">Processing</SelectItem>
+                      <SelectItem value="out_for_delivery">Out for Delivery</SelectItem>
                       <SelectItem value="delivered">Delivered</SelectItem>
                       <SelectItem value="cancelled">Cancelled</SelectItem>
                     </SelectContent>
