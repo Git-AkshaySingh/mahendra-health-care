@@ -11,9 +11,10 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { User, Package, FileText, Lock, MapPin, Phone, Mail, Calendar, Upload, Eye } from "lucide-react";
+import { User, Package, FileText, Lock, MapPin, Phone, Mail, Calendar, Upload, Eye, Bell } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
+import { OrderTrackingTimeline } from "@/components/OrderTrackingTimeline";
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
@@ -116,6 +117,23 @@ const ClientDashboard = () => {
         .order('uploaded_at', { ascending: false });
       
       if (error) throw error;
+      return data || [];
+    },
+    enabled: !!user?.id,
+  });
+
+  // Fetch customer notifications
+  const { data: notifications, refetch: refetchNotifications } = useQuery({
+    queryKey: ['customer-notifications', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      const { data } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('audience', 'user')
+        .order('created_at', { ascending: false })
+        .limit(50);
       return data || [];
     },
     enabled: !!user?.id,
@@ -262,7 +280,7 @@ const ClientDashboard = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-2 h-auto p-2">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-2 h-auto p-2">
             <TabsTrigger value="profile" className="flex items-center gap-2 py-3">
               <User className="h-4 w-4" />
               <span className="hidden sm:inline">Profile</span>
@@ -274,6 +292,10 @@ const ClientDashboard = () => {
             <TabsTrigger value="prescriptions" className="flex items-center gap-2 py-3">
               <FileText className="h-4 w-4" />
               <span className="hidden sm:inline">Prescriptions</span>
+            </TabsTrigger>
+            <TabsTrigger value="notifications" className="flex items-center gap-2 py-3">
+              <Bell className="h-4 w-4" />
+              <span className="hidden sm:inline">Alerts</span>
             </TabsTrigger>
             <TabsTrigger value="security" className="flex items-center gap-2 py-3">
               <Lock className="h-4 w-4" />
@@ -444,6 +466,7 @@ const ClientDashboard = () => {
                               </div>
                             ))}
                           </div>
+                          <OrderTrackingTimeline orderId={order.id} currentStatus={(order.status || 'pending').toLowerCase()} />
                         </div>
                       </Card>
                     ))}
@@ -515,6 +538,45 @@ const ClientDashboard = () => {
                     <p className="text-sm text-muted-foreground mt-2">
                       Use the prescription upload button in the navigation bar to upload
                     </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Notifications Tab */}
+          <TabsContent value="notifications">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2"><Bell className="h-5 w-5"/> Notifications</CardTitle>
+                <CardDescription>Updates on your orders and account</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {notifications && notifications.length > 0 ? (
+                  <div className="space-y-3">
+                    {notifications.map((n: any) => (
+                      <div key={n.id} className={`border rounded-lg p-3 ${!n.read ? "bg-muted/40" : ""}`}>
+                        <div className="flex justify-between gap-3">
+                          <div>
+                            <p className="font-medium text-sm">{n.title}</p>
+                            {n.body && <p className="text-sm text-muted-foreground">{n.body}</p>}
+                          </div>
+                          <span className="text-xs text-muted-foreground whitespace-nowrap">{format(new Date(n.created_at), 'MMM dd, HH:mm')}</span>
+                        </div>
+                        {!n.read && (
+                          <Button variant="link" size="sm" className="px-0 h-auto mt-1"
+                            onClick={async () => {
+                              await supabase.from('notifications').update({ read: true }).eq('id', n.id);
+                              refetchNotifications();
+                            }}>Mark as read</Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground">No notifications yet</p>
                   </div>
                 )}
               </CardContent>

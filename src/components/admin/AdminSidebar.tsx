@@ -5,16 +5,17 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-const menuItems = [
-  { title: "Dashboard", url: "/admin", icon: Home },
-  { title: "Products", url: "/admin/products", icon: Pill },
-  { title: "Categories", url: "/admin/categories", icon: FolderTree },
-  { title: "Orders", url: "/admin/orders", icon: Package },
-  { title: "Users", url: "/admin/users", icon: Users },
-  { title: "Blog Articles", url: "/admin/articles", icon: FileText },
+const ALL_ITEMS = [
+  { title: "Dashboard", url: "/admin", icon: Home, adminOnly: false },
+  { title: "Products", url: "/admin/products", icon: Pill, adminOnly: false },
+  { title: "Categories", url: "/admin/categories", icon: FolderTree, adminOnly: true },
+  { title: "Orders", url: "/admin/orders", icon: Package, adminOnly: false },
+  { title: "Users", url: "/admin/users", icon: Users, adminOnly: true },
+  { title: "Blog Articles", url: "/admin/articles", icon: FileText, adminOnly: true },
 ];
 
-export const AdminSidebar = () => {
+export const AdminSidebar = ({ role }: { role: "admin" | "staff" }) => {
+  const menuItems = ALL_ITEMS.filter(i => role === "admin" || !i.adminOnly);
   const { state } = useSidebar();
   const location = useLocation();
   const navigate = useNavigate();

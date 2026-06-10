@@ -183,6 +183,50 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          audience: string
+          body: string | null
+          created_at: string
+          id: string
+          link: string | null
+          order_id: string | null
+          read: boolean
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          audience?: string
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          order_id?: string | null
+          read?: boolean
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          audience?: string
+          body?: string | null
+          created_at?: string
+          id?: string
+          link?: string | null
+          order_id?: string | null
+          read?: boolean
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_items: {
         Row: {
           discount_at_purchase: number | null
@@ -225,14 +269,59 @@ export type Database = {
           },
         ]
       }
+      order_status_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          note: string | null
+          order_id: string
+          status: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          note?: string | null
+          order_id: string
+          status: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          note?: string | null
+          order_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_status_history_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           created_at: string | null
+          customer_email: string | null
           customer_id: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          delivery_fee: number
+          delivery_type: string
           id: string
+          notes: string | null
           payment_method: string | null
           payment_status: string | null
+          prescription_id: string | null
           prescription_url: string | null
+          shipping_address: string | null
+          shipping_city: string | null
+          shipping_zip: string | null
           status: string | null
           total_amount: number | null
           updated_at: string | null
@@ -240,11 +329,21 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          customer_email?: string | null
           customer_id?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          delivery_fee?: number
+          delivery_type?: string
           id?: string
+          notes?: string | null
           payment_method?: string | null
           payment_status?: string | null
+          prescription_id?: string | null
           prescription_url?: string | null
+          shipping_address?: string | null
+          shipping_city?: string | null
+          shipping_zip?: string | null
           status?: string | null
           total_amount?: number | null
           updated_at?: string | null
@@ -252,11 +351,21 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          customer_email?: string | null
           customer_id?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          delivery_fee?: number
+          delivery_type?: string
           id?: string
+          notes?: string | null
           payment_method?: string | null
           payment_status?: string | null
+          prescription_id?: string | null
           prescription_url?: string | null
+          shipping_address?: string | null
+          shipping_city?: string | null
+          shipping_zip?: string | null
           status?: string | null
           total_amount?: number | null
           updated_at?: string | null
@@ -268,6 +377,13 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_prescription_id_fkey"
+            columns: ["prescription_id"]
+            isOneToOne: false
+            referencedRelation: "prescriptions"
             referencedColumns: ["id"]
           },
         ]
