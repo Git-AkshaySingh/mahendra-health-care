@@ -544,9 +544,47 @@ const ClientDashboard = () => {
             </Card>
           </TabsContent>
 
+          {/* Notifications Tab */}
+          <TabsContent value="notifications">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2"><Bell className="h-5 w-5"/> Notifications</CardTitle>
+                <CardDescription>Updates on your orders and account</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {notifications && notifications.length > 0 ? (
+                  <div className="space-y-3">
+                    {notifications.map((n: any) => (
+                      <div key={n.id} className={`border rounded-lg p-3 ${!n.read ? "bg-muted/40" : ""}`}>
+                        <div className="flex justify-between gap-3">
+                          <div>
+                            <p className="font-medium text-sm">{n.title}</p>
+                            {n.body && <p className="text-sm text-muted-foreground">{n.body}</p>}
+                          </div>
+                          <span className="text-xs text-muted-foreground whitespace-nowrap">{format(new Date(n.created_at), 'MMM dd, HH:mm')}</span>
+                        </div>
+                        {!n.read && (
+                          <Button variant="link" size="sm" className="px-0 h-auto mt-1"
+                            onClick={async () => {
+                              await supabase.from('notifications').update({ read: true }).eq('id', n.id);
+                              refetchNotifications();
+                            }}>Mark as read</Button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <p className="text-muted-foreground">No notifications yet</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Security Tab */}
           <TabsContent value="security">
-
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
