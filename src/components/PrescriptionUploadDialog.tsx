@@ -187,23 +187,28 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
             </div>
           ) : (
             <div className="relative">
-              {preview && (
-                <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
-                  <img 
-                    src={preview} 
-                    alt="Preview" 
+              <div className="relative aspect-video rounded-lg overflow-hidden bg-muted flex items-center justify-center">
+                {preview ? (
+                  <img
+                    src={preview}
+                    alt="Preview"
                     className="w-full h-full object-contain"
                   />
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="absolute top-2 right-2"
-                    onClick={handleRemoveFile}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              )}
+                ) : (
+                  <div className="text-center p-4">
+                    <FileImage className="h-10 w-10 text-muted-foreground mx-auto mb-2" />
+                    <p className="text-sm text-muted-foreground">PDF selected</p>
+                  </div>
+                )}
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  className="absolute top-2 right-2"
+                  onClick={handleRemoveFile}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
               <p className="text-sm text-muted-foreground mt-2 truncate">
                 {selectedFile.name}
               </p>
@@ -213,7 +218,7 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/jpg,image/webp"
+            accept="image/jpeg,image/png,image/jpg,image/webp,application/pdf"
             onChange={handleFileSelect}
             className="hidden"
           />
