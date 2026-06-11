@@ -5,6 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Shield, UserCog } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useDashboardRole } from "./AdminLayout";
 import { ShieldAlert } from "lucide-react";
@@ -22,6 +27,27 @@ const Users = () => {
   }
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState({ email: "", password: "", full_name: "", role: "staff" as "staff" | "admin" });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleCreate = async () => {
+    if (!form.email || !form.password) {
+      toast({ title: "Missing fields", description: "Email and password required", variant: "destructive" });
+      return;
+    }
+    setSubmitting(true);
+    const { data, error } = await supabase.functions.invoke("create-staff-user", { body: form });
+    setSubmitting(false);
+    if (error || (data as any)?.error) {
+      toast({ title: "Error", description: (data as any)?.error || error?.message || "Failed", variant: "destructive" });
+      return;
+    }
+    toast({ title: "Created", description: `${form.role} account created` });
+    setForm({ email: "", password: "", full_name: "", role: "staff" });
+    setOpen(false);
+    queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+  };
 
   const { data: users } = useQuery({
     queryKey: ["admin-users"],
@@ -80,6 +106,35 @@ const Users = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Users Management</h1>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button><Plus className="mr-2 h-4 w-4"/>Create Staff</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create Staff Account</DialogTitle>
+              <DialogDescription>Creates a new user with staff or admin privileges.</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-3">
+              <div><Label>Full Name</Label><Input value={form.full_name} onChange={e => setForm({ ...form, full_name: e.target.value })} /></div>
+              <div><Label>Email</Label><Input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
+              <div><Label>Password</Label><Input type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} /></div>
+              <div><Label>Role</Label>
+                <Select value={form.role} onValueChange={(v: any) => setForm({ ...form, role: v })}>
+                  <SelectTrigger><SelectValue/></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="staff">Staff</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+              <Button onClick={handleCreate} disabled={submitting}>{submitting ? "Creating..." : "Create"}</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="rounded-md border bg-card">
