@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { User, Menu, X, Search, ShoppingCart, LogIn, LogOut, LayoutDashboard, Phone, Heart, Package } from "lucide-react";
 import { CartSheet } from "@/components/CartSheet";
+import { PrescriptionUploadDialog } from "@/components/PrescriptionUploadDialog";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -98,6 +99,9 @@ export const Navbar = () => {
               </form>
 
               <CartSheet />
+              <div className="hidden sm:block">
+                <PrescriptionUploadDialog user={user} onLoginRequired={() => navigate("/auth")} />
+              </div>
 
               {/* Auth Buttons */}
               <div className="hidden md:flex items-center gap-1">
