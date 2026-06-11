@@ -182,7 +182,7 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
                 Click to upload or drag and drop
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                JPEG, PNG or WebP (max 5MB)
+                JPEG, PNG, WebP or PDF (max 5MB)
               </p>
             </div>
           ) : (
