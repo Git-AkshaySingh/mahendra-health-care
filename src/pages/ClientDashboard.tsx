@@ -15,6 +15,7 @@ import { User, Package, FileText, Lock, MapPin, Phone, Mail, Calendar, Upload, E
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { OrderTrackingTimeline } from "@/components/OrderTrackingTimeline";
+import { PrescriptionCard } from "@/components/PrescriptionCard";
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
