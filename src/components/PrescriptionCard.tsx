@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Eye, Loader2 } from "lucide-react";
@@ -61,11 +61,12 @@ export const PrescriptionCard = ({ prescription }: PrescriptionCardProps) => {
   };
 
   // Auto-load thumbnail signed URL for images
-  useState(() => {
+  useEffect(() => {
     if (path && isImagePath(path)) {
       ensureSignedUrl();
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [path]);
 
   return (
     <Card className="overflow-hidden">
