@@ -37,12 +37,12 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type - only images
-    const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+    // Validate file type - images and PDF
+    const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp', 'application/pdf'];
     if (!validTypes.includes(file.type)) {
       toast({
         title: "Invalid file type",
-        description: "Please upload an image file (JPEG, PNG, or WebP)",
+        description: "Please upload an image (JPEG, PNG, WebP) or PDF file",
         variant: "destructive",
       });
       return;
@@ -59,13 +59,17 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
     }
 
     setSelectedFile(file);
-    
-    // Create preview
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+
+    // Create preview for images only
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreview(null);
+    }
   };
 
   const handleUpload = async () => {
@@ -77,30 +81,35 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
       const fileExt = selectedFile.name.split('.').pop();
       const fileName = `${user.id}/${Date.now()}.${fileExt}`;
 
-      // Upload to Supabase Storage
-      const { error: uploadError, data: uploadData } = await supabase.storage
+      // Upload to Supabase Storage (private bucket)
+      const { error: uploadError } = await supabase.storage
         .from('prescriptions')
         .upload(fileName, selectedFile, {
           cacheControl: '3600',
           upsert: false,
+          contentType: selectedFile.type,
         });
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Storage upload error:', uploadError);
+        throw uploadError;
+      }
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('prescriptions')
-        .getPublicUrl(fileName);
-
-      // Save prescription record
+      // Save prescription record — store the storage PATH (not a URL),
+      // since the bucket is private and we need signed URLs to view.
       const { error: dbError } = await supabase
         .from('prescriptions')
         .insert({
           customer_id: user.id,
-          file_url: publicUrl,
+          file_url: fileName,
         });
 
-      if (dbError) throw dbError;
+      if (dbError) {
+        console.error('DB insert error:', dbError);
+        // Roll back the uploaded file so we don't leave orphans
+        await supabase.storage.from('prescriptions').remove([fileName]);
+        throw dbError;
+      }
 
       toast({
         title: "Success",
