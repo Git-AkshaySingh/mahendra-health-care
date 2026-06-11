@@ -500,35 +500,7 @@ const ClientDashboard = () => {
                 {prescriptions && prescriptions.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {prescriptions.map((prescription: any) => (
-                      <Card key={prescription.id} className="overflow-hidden">
-                        <div className="aspect-video bg-muted flex items-center justify-center">
-                          {prescription.file_url ? (
-                            <img 
-                              src={prescription.file_url} 
-                              alt="Prescription" 
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <FileText className="h-12 w-12 text-muted-foreground" />
-                          )}
-                        </div>
-                        <div className="p-4">
-                          <p className="text-sm text-muted-foreground">
-                            Uploaded on {format(new Date(prescription.uploaded_at), 'MMM dd, yyyy')}
-                          </p>
-                          {prescription.file_url && (
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="mt-2 w-full"
-                              onClick={() => window.open(prescription.file_url, '_blank')}
-                            >
-                              <Eye className="h-4 w-4 mr-2" />
-                              View
-                            </Button>
-                          )}
-                        </div>
-                      </Card>
+                      <PrescriptionCard key={prescription.id} prescription={prescription} />
                     ))}
                   </div>
                 ) : (
