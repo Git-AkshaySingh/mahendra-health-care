@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { OrderTrackingTimeline } from "@/components/OrderTrackingTimeline";
 import { PrescriptionCard } from "@/components/PrescriptionCard";
+import { DeleteAccountSection } from "@/components/DeleteAccountSection";
 
 const ClientDashboard = () => {
   const navigate = useNavigate();
@@ -606,6 +607,10 @@ const ClientDashboard = () => {
                   <h3 className="font-medium mb-2">Account Email</h3>
                   <p className="text-muted-foreground">{user?.email}</p>
                 </div>
+
+                <Separator />
+
+                <DeleteAccountSection userId={user?.id} />
               </CardContent>
             </Card>
           </TabsContent>
