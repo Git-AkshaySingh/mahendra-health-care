@@ -24,6 +24,7 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState<string>("cod");
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", phone: "", address: "", city: "", zip: "" });
+  const [orderNote, setOrderNote] = useState("");
 
   const deliveryFee = deliveryType === "express" ? 99 : totalPrice >= 500 ? 0 : 50;
   const grandTotal = totalPrice + deliveryFee;
@@ -75,6 +76,7 @@ const Checkout = () => {
         shipping_city: form.city,
         shipping_zip: form.zip,
         prescription_id: prescriptionId !== "none" ? prescriptionId : null,
+        notes: orderNote || null,
       }).select().single();
       if (orderErr) throw orderErr;
 
@@ -168,6 +170,16 @@ const Checkout = () => {
                     </SelectContent>
                   </Select>
                   <p className="text-xs text-muted-foreground mt-2">Upload prescriptions from the navbar or your dashboard.</p>
+                  <div className="mt-4 space-y-2">
+                    <Label>Note for pharmacist (optional)</Label>
+                    <textarea
+                      value={orderNote}
+                      onChange={(e) => setOrderNote(e.target.value)}
+                      rows={3}
+                      placeholder="Allergies, dosage preferences, special instructions…"
+                      className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                    />
+                  </div>
                 </CardContent>
               </Card>
 
