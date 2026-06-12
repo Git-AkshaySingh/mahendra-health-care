@@ -22,6 +22,7 @@ import Categories from "./pages/admin/Categories";
 import Users from "./pages/admin/Users";
 import Articles from "./pages/admin/Articles";
 import Orders from "./pages/admin/Orders";
+import Customers from "./pages/admin/Customers";
 import NotFound from "./pages/NotFound";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
@@ -58,6 +59,7 @@ const App = () => (
             <Route path="users" element={<Users />} />
             <Route path="articles" element={<Articles />} />
             <Route path="orders" element={<Orders />} />
+            <Route path="customers" element={<Customers />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
