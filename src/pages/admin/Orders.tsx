@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { PrescriptionCard } from "@/components/PrescriptionCard";
 
 const Orders = () => {
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
@@ -29,6 +30,7 @@ const Orders = () => {
         .select(`
           *,
           customers(full_name, email, phone),
+          prescriptions:prescription_id(id, file_url, uploaded_at),
           order_items(
             *,
             products(name, price, image_url)
@@ -230,17 +232,21 @@ const Orders = () => {
                 </div>
               </div>
 
-              {selectedOrder.prescription_url && (
+              {selectedOrder.prescriptions && (
                 <div>
-                  <h3 className="font-semibold mb-2">Prescription</h3>
-                  <a
-                    href={selectedOrder.prescription_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline"
-                  >
-                    View Prescription
-                  </a>
+                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                    <FileText className="h-4 w-4" /> Attached Prescription
+                  </h3>
+                  <div className="max-w-sm">
+                    <PrescriptionCard prescription={selectedOrder.prescriptions} />
+                  </div>
+                </div>
+              )}
+
+              {selectedOrder.notes && (
+                <div>
+                  <h3 className="font-semibold mb-2">Customer Note</h3>
+                  <p className="text-sm bg-muted rounded-md p-3 whitespace-pre-wrap">{selectedOrder.notes}</p>
                 </div>
               )}
 

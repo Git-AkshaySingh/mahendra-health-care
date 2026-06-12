@@ -492,6 +492,7 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
+          deletion_requested_at: string | null
           email: string | null
           full_name: string | null
           id: string
@@ -500,6 +501,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          deletion_requested_at?: string | null
           email?: string | null
           full_name?: string | null
           id: string
@@ -508,6 +510,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          deletion_requested_at?: string | null
           email?: string | null
           full_name?: string | null
           id?: string
@@ -557,6 +560,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      purge_deleted_accounts: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "admin" | "user" | "staff"

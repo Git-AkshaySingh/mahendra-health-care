@@ -1,4 +1,1 @@
 project_id = "rzqahidfmcgqnzsgzmkg"
-
-[functions.create-staff-user]
-verify_jwt = true
