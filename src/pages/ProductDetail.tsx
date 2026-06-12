@@ -277,6 +277,7 @@ const ProductDetail = () => {
                     disabled={product.stock_quantity === 0}
                     className="flex-1"
                   >
+                    Buy Now
                   </Button>
                 </div>
               </div>

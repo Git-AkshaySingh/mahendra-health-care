@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import { Home, Pill, Users, FileText, FolderTree, Package, LogOut } from "lucide-react";
+import { Home, Pill, Users, FileText, FolderTree, Package, LogOut, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -10,6 +10,7 @@ const ALL_ITEMS = [
   { title: "Products", url: "/admin/products", icon: Pill, adminOnly: false },
   { title: "Categories", url: "/admin/categories", icon: FolderTree, adminOnly: true },
   { title: "Orders", url: "/admin/orders", icon: Package, adminOnly: false },
+  { title: "Customers", url: "/admin/customers", icon: UserCircle, adminOnly: false },
   { title: "Users", url: "/admin/users", icon: Users, adminOnly: true },
   { title: "Blog Articles", url: "/admin/articles", icon: FileText, adminOnly: true },
 ];
