@@ -11,6 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
+import { Upload, Loader2 } from "lucide-react";
+import { useRef } from "react";
 
 const Articles = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -26,6 +28,37 @@ const Articles = () => {
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Invalid file", description: "Please choose an image", variant: "destructive" });
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Max 5MB", variant: "destructive" });
+      return;
+    }
+    setUploadingImage(true);
+    const ext = file.name.split(".").pop();
+    const path = `articles/${Date.now()}.${ext}`;
+    const { error: upErr } = await supabase.storage
+      .from("blog-images")
+      .upload(path, file, { cacheControl: "3600", upsert: false, contentType: file.type });
+    if (upErr) {
+      setUploadingImage(false);
+      toast({ title: "Upload failed", description: upErr.message, variant: "destructive" });
+      return;
+    }
+    const { data } = supabase.storage.from("blog-images").getPublicUrl(path);
+    setFormData((p) => ({ ...p, featured_image_url: data.publicUrl }));
+    setUploadingImage(false);
+    toast({ title: "Image uploaded" });
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   const { data: articles } = useQuery({
     queryKey: ["admin-articles"],
@@ -186,12 +219,28 @@ const Articles = () => {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="image">Featured Image URL</Label>
-                <Input
-                  id="image"
-                  value={formData.featured_image_url}
-                  onChange={(e) => setFormData({ ...formData, featured_image_url: e.target.value })}
-                />
+                <Label htmlFor="image">Featured Image</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="image"
+                    value={formData.featured_image_url}
+                    onChange={(e) => setFormData({ ...formData, featured_image_url: e.target.value })}
+                    placeholder="Paste URL or upload"
+                  />
+                  <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()} disabled={uploadingImage}>
+                    {uploadingImage ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                  </Button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                </div>
+                {formData.featured_image_url && (
+                  <img src={formData.featured_image_url} alt="preview" className="mt-2 h-28 rounded object-cover" />
+                )}
               </div>
 
               <div className="flex items-center space-x-2">

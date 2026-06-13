@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import Products from "./pages/Products";
 import ClientDashboard from "./pages/ClientDashboard";
 import Blog from "./pages/Blog";
+import BlogArticle from "./pages/BlogArticle";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -46,6 +47,7 @@ const App = () => (
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogArticle />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

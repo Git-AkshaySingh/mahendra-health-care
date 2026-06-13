@@ -26,7 +26,6 @@ const Products = () => {
     category: "",
     manufacturer: "",
     image_url: "",
-    qr_code_url: "",
   });
 
   const { toast } = useToast();
@@ -110,7 +109,6 @@ const Products = () => {
       category: "",
       manufacturer: "",
       image_url: "",
-      qr_code_url: "",
     });
     setEditingProduct(null);
     setIsDialogOpen(false);
@@ -146,7 +144,6 @@ const Products = () => {
       category: product.category,
       manufacturer: product.manufacturer || "",
       image_url: product.image_url || "",
-      qr_code_url: product.qr_code_url || "",
     });
     setIsDialogOpen(true);
   };
@@ -290,17 +287,6 @@ const Products = () => {
                   value={formData.image_url}
                   onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                   placeholder="https://example.com/image.jpg"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="qr_code_url">QR Code URL</Label>
-                <Input
-                  id="qr_code_url"
-                  type="url"
-                  value={formData.qr_code_url}
-                  onChange={(e) => setFormData({ ...formData, qr_code_url: e.target.value })}
-                  placeholder="https://example.com/qr-code.jpg"
                 />
               </div>
 

@@ -1,17 +1,73 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Eye, FileText, Package } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Eye, FileText, Package, Pencil, Trash2, Ban, CheckCircle2 } from "lucide-react";
 import { PrescriptionCard } from "@/components/PrescriptionCard";
 import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
+import { useDashboardRole } from "./AdminLayout";
 
 const Customers = () => {
+  const role = useDashboardRole();
+  const isAdmin = role === "admin";
+  const { toast } = useToast();
+  const qc = useQueryClient();
   const [selected, setSelected] = useState<any>(null);
   const [open, setOpen] = useState(false);
+  const [editing, setEditing] = useState<any>(null);
+  const [editForm, setEditForm] = useState({ full_name: "", email: "", phone: "" });
+  const [deleting, setDeleting] = useState<any>(null);
+  const [busy, setBusy] = useState(false);
+
+  const callManage = async (body: Record<string, unknown>) => {
+    const { data, error } = await supabase.functions.invoke("manage-user", { body });
+    if (error || (data as any)?.error) {
+      toast({ title: "Error", description: (data as any)?.error || error?.message || "Failed", variant: "destructive" });
+      return false;
+    }
+    return true;
+  };
+
+  const handleEditSave = async () => {
+    if (!editing) return;
+    setBusy(true);
+    const ok = await callManage({ action: "update_profile", user_id: editing.id, ...editForm });
+    setBusy(false);
+    if (ok) {
+      toast({ title: "Customer updated" });
+      setEditing(null);
+      qc.invalidateQueries({ queryKey: ["admin-customers"] });
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!deleting) return;
+    setBusy(true);
+    const ok = await callManage({ action: "delete", user_id: deleting.id });
+    setBusy(false);
+    if (ok) {
+      toast({ title: "Customer deleted" });
+      setDeleting(null);
+      qc.invalidateQueries({ queryKey: ["admin-customers"] });
+    }
+  };
+
+  const handleToggleDisable = async (c: any) => {
+    setBusy(true);
+    const ok = await callManage({ action: c.disabled ? "enable" : "disable", user_id: c.id });
+    setBusy(false);
+    if (ok) {
+      toast({ title: c.disabled ? "Customer enabled" : "Customer disabled" });
+      qc.invalidateQueries({ queryKey: ["admin-customers"] });
+    }
+  };
 
   const { data: customers } = useQuery({
     queryKey: ["admin-customers"],
@@ -67,16 +123,34 @@ const Customers = () => {
                 <TableCell>{c.phone || "—"}</TableCell>
                 <TableCell>{format(new Date(c.created_at), "MMM dd, yyyy")}</TableCell>
                 <TableCell>
-                  {c.deletion_requested_at ? (
+                  {c.disabled ? (
+                    <Badge variant="secondary">Disabled</Badge>
+                  ) : c.deletion_requested_at ? (
                     <Badge variant="destructive">Deletion requested</Badge>
                   ) : (
                     <Badge variant="outline">Active</Badge>
                   )}
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button variant="ghost" size="icon" onClick={() => { setSelected(c); setOpen(true); }}>
-                    <Eye className="h-4 w-4" />
-                  </Button>
+                  <div className="flex justify-end gap-1">
+                    <Button variant="ghost" size="icon" title="View" onClick={() => { setSelected(c); setOpen(true); }}>
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    {isAdmin && (
+                      <>
+                        <Button variant="ghost" size="icon" title="Edit"
+                          onClick={() => { setEditing(c); setEditForm({ full_name: c.full_name || "", email: c.email || "", phone: c.phone || "" }); }}>
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" title={c.disabled ? "Enable" : "Disable"} onClick={() => handleToggleDisable(c)} disabled={busy}>
+                          {c.disabled ? <CheckCircle2 className="h-4 w-4 text-green-600"/> : <Ban className="h-4 w-4"/>}
+                        </Button>
+                        <Button variant="ghost" size="icon" title="Delete" onClick={() => setDeleting(c)}>
+                          <Trash2 className="h-4 w-4 text-destructive"/>
+                        </Button>
+                      </>
+                    )}
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
@@ -132,7 +206,7 @@ const Customers = () => {
                 {detail?.prescriptions.length ? (
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {detail.prescriptions.map((p: any) => (
-                      <PrescriptionCard key={p.id} prescription={p} />
+                      <PrescriptionCard key={p.id} prescription={p} canEdit={isAdmin} canDelete={isAdmin} />
                     ))}
                   </div>
                 ) : <p className="text-sm text-muted-foreground">No prescriptions uploaded.</p>}
@@ -141,6 +215,41 @@ const Customers = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Edit */}
+      <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Customer</DialogTitle>
+            <DialogDescription>Update customer details.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div><Label>Full Name</Label><Input value={editForm.full_name} onChange={e => setEditForm({...editForm, full_name: e.target.value})}/></div>
+            <div><Label>Email</Label><Input type="email" value={editForm.email} onChange={e => setEditForm({...editForm, email: e.target.value})}/></div>
+            <div><Label>Phone</Label><Input value={editForm.phone} onChange={e => setEditForm({...editForm, phone: e.target.value})}/></div>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setEditing(null)}>Cancel</Button>
+            <Button onClick={handleEditSave} disabled={busy}>{busy ? "Saving..." : "Save"}</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete */}
+      <AlertDialog open={!!deleting} onOpenChange={(o) => !o && setDeleting(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this customer?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This permanently removes {deleting?.email}. This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} disabled={busy}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

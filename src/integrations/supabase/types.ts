@@ -391,20 +391,26 @@ export type Database = {
       prescriptions: {
         Row: {
           customer_id: string | null
+          description: string | null
           file_url: string | null
           id: string
+          title: string
           uploaded_at: string | null
         }
         Insert: {
           customer_id?: string | null
+          description?: string | null
           file_url?: string | null
           id?: string
+          title?: string
           uploaded_at?: string | null
         }
         Update: {
           customer_id?: string | null
+          description?: string | null
           file_url?: string | null
           id?: string
+          title?: string
           uploaded_at?: string | null
         }
         Relationships: [
@@ -432,7 +438,6 @@ export type Database = {
           pack_size: number | null
           pack_type: string | null
           price: number
-          qr_code_url: string | null
           salt: string | null
           side_effects: string | null
           stock_quantity: number
@@ -455,7 +460,6 @@ export type Database = {
           pack_size?: number | null
           pack_type?: string | null
           price?: number
-          qr_code_url?: string | null
           salt?: string | null
           side_effects?: string | null
           stock_quantity?: number
@@ -478,7 +482,6 @@ export type Database = {
           pack_size?: number | null
           pack_type?: string | null
           price?: number
-          qr_code_url?: string | null
           salt?: string | null
           side_effects?: string | null
           stock_quantity?: number
@@ -493,6 +496,7 @@ export type Database = {
         Row: {
           created_at: string
           deletion_requested_at: string | null
+          disabled: boolean
           email: string | null
           full_name: string | null
           id: string
@@ -502,6 +506,7 @@ export type Database = {
         Insert: {
           created_at?: string
           deletion_requested_at?: string | null
+          disabled?: boolean
           email?: string | null
           full_name?: string | null
           id: string
@@ -511,6 +516,7 @@ export type Database = {
         Update: {
           created_at?: string
           deletion_requested_at?: string | null
+          disabled?: boolean
           email?: string | null
           full_name?: string | null
           id?: string
