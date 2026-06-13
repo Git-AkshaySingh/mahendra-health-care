@@ -4,8 +4,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Shield, UserCog } from "lucide-react";
+import { Shield, UserCog, Pencil, Trash2, Ban, KeyRound, CheckCircle2 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
@@ -30,6 +31,21 @@ const Users = () => {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ email: "", password: "", full_name: "", role: "staff" as "staff" | "admin" });
   const [submitting, setSubmitting] = useState(false);
+  const [editUser, setEditUser] = useState<any>(null);
+  const [editForm, setEditForm] = useState({ full_name: "", email: "", phone: "" });
+  const [resetUser, setResetUser] = useState<any>(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [deleteUser, setDeleteUser] = useState<any>(null);
+  const [busy, setBusy] = useState(false);
+
+  const callManage = async (body: Record<string, unknown>) => {
+    const { data, error } = await supabase.functions.invoke("manage-user", { body });
+    if (error || (data as any)?.error) {
+      toast({ title: "Error", description: (data as any)?.error || error?.message || "Failed", variant: "destructive" });
+      return false;
+    }
+    return true;
+  };
 
   const handleCreate = async () => {
     if (!form.email || !form.password) {
@@ -47,6 +63,56 @@ const Users = () => {
     setForm({ email: "", password: "", full_name: "", role: "staff" });
     setOpen(false);
     queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+  };
+
+  const handleEditSave = async () => {
+    if (!editUser) return;
+    setBusy(true);
+    const ok = await callManage({ action: "update_profile", user_id: editUser.id, ...editForm });
+    setBusy(false);
+    if (ok) {
+      toast({ title: "Updated" });
+      setEditUser(null);
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+    }
+  };
+
+  const handleReset = async () => {
+    if (!resetUser) return;
+    if (newPassword.length < 6) {
+      toast({ title: "Password too short", variant: "destructive" });
+      return;
+    }
+    setBusy(true);
+    const ok = await callManage({ action: "reset_password", user_id: resetUser.id, password: newPassword });
+    setBusy(false);
+    if (ok) {
+      toast({ title: "Password reset" });
+      setResetUser(null);
+      setNewPassword("");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!deleteUser) return;
+    setBusy(true);
+    const ok = await callManage({ action: "delete", user_id: deleteUser.id });
+    setBusy(false);
+    if (ok) {
+      toast({ title: "User deleted" });
+      setDeleteUser(null);
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+    }
+  };
+
+  const handleToggleDisable = async (u: any) => {
+    setBusy(true);
+    const ok = await callManage({ action: u.disabled ? "enable" : "disable", user_id: u.id });
+    setBusy(false);
+    if (ok) {
+      toast({ title: u.disabled ? "User enabled" : "User disabled" });
+      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
+    }
   };
 
   const { data: users } = useQuery({
@@ -166,6 +232,7 @@ const Users = () => {
                     {new Date(user.created_at).toLocaleDateString()}
                   </TableCell>
                   <TableCell className="text-right">
+                    <div className="flex justify-end items-center gap-1">
                     <Select
                       value={userRole}
                       onValueChange={(newRole) =>
@@ -186,6 +253,23 @@ const Users = () => {
                         <SelectItem value="admin">Admin</SelectItem>
                       </SelectContent>
                     </Select>
+                    <Button variant="ghost" size="icon" title="Edit"
+                      onClick={() => { setEditUser(user); setEditForm({ full_name: user.full_name || "", email: user.email || "", phone: user.phone || "" }); }}>
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" title={user.disabled ? "Enable" : "Disable"}
+                      onClick={() => handleToggleDisable(user)} disabled={busy}>
+                      {user.disabled ? <CheckCircle2 className="h-4 w-4 text-green-600"/> : <Ban className="h-4 w-4"/>}
+                    </Button>
+                    <Button variant="ghost" size="icon" title="Reset password"
+                      onClick={() => { setResetUser(user); setNewPassword(""); }}>
+                      <KeyRound className="h-4 w-4"/>
+                    </Button>
+                    <Button variant="ghost" size="icon" title="Delete"
+                      onClick={() => setDeleteUser(user)}>
+                      <Trash2 className="h-4 w-4 text-destructive"/>
+                    </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               );
@@ -193,6 +277,56 @@ const Users = () => {
           </TableBody>
         </Table>
       </div>
+
+      {/* Edit dialog */}
+      <Dialog open={!!editUser} onOpenChange={(o) => !o && setEditUser(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit User</DialogTitle>
+            <DialogDescription>Update basic user details.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3">
+            <div><Label>Full Name</Label><Input value={editForm.full_name} onChange={e => setEditForm({...editForm, full_name: e.target.value})} /></div>
+            <div><Label>Email</Label><Input type="email" value={editForm.email} onChange={e => setEditForm({...editForm, email: e.target.value})} /></div>
+            <div><Label>Phone</Label><Input value={editForm.phone} onChange={e => setEditForm({...editForm, phone: e.target.value})} /></div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditUser(null)}>Cancel</Button>
+            <Button onClick={handleEditSave} disabled={busy}>{busy ? "Saving..." : "Save"}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Reset password */}
+      <Dialog open={!!resetUser} onOpenChange={(o) => !o && setResetUser(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Reset Password</DialogTitle>
+            <DialogDescription>Set a new password for {resetUser?.email}.</DialogDescription>
+          </DialogHeader>
+          <div><Label>New Password</Label><Input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} /></div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setResetUser(null)}>Cancel</Button>
+            <Button onClick={handleReset} disabled={busy}>{busy ? "Saving..." : "Reset"}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete confirm */}
+      <AlertDialog open={!!deleteUser} onOpenChange={(o) => !o && setDeleteUser(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this user?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This permanently removes {deleteUser?.email}. This cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} disabled={busy}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
