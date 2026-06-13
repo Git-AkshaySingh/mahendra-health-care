@@ -8,6 +8,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { FileImage, Upload, X } from "lucide-react";
@@ -22,8 +26,11 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const handleTriggerClick = () => {
     if (!user) {
@@ -74,6 +81,10 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
 
   const handleUpload = async () => {
     if (!selectedFile || !user) return;
+    if (!title.trim()) {
+      toast({ title: "Title required", description: "Please add a title for your prescription", variant: "destructive" });
+      return;
+    }
 
     setUploading(true);
     try {
@@ -102,6 +113,8 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
         .insert({
           customer_id: user.id,
           file_url: fileName,
+          title: title.trim(),
+          description: description.trim() || null,
         });
 
       if (dbError) {
@@ -119,7 +132,10 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
       // Reset state
       setSelectedFile(null);
       setPreview(null);
+      setTitle("");
+      setDescription("");
       setOpen(false);
+      queryClient.invalidateQueries({ queryKey: ['customer-prescriptions'] });
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
@@ -172,6 +188,25 @@ export const PrescriptionUploadDialog = ({ user, onLoginRequired }: Prescription
         </DialogHeader>
 
         <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="rx-title">Prescription Title *</Label>
+            <Input
+              id="rx-title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. Blood Pressure Medicine"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="rx-desc">Description (optional)</Label>
+            <Textarea
+              id="rx-desc"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="e.g. Prescription from Dr. Sharma for monthly BP medication"
+              rows={2}
+            />
+          </div>
           {!selectedFile ? (
             <div 
               className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 transition-colors"
