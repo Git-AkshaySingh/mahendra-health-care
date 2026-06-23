@@ -22,7 +22,7 @@ export const Footer = () => {
             <h4 className="font-bold text-foreground mb-4">Policies</h4>
             <ul className="space-y-2 text-sm">
               <li><Link to="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
+              <li><Link to="/terms-and-conditions" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
               <li><Link to="/return-policy" className="text-muted-foreground hover:text-primary transition-colors">Refund Policy</Link></li>
               <li><Link to="/disclaimer" className="text-muted-foreground hover:text-primary transition-colors">Shipping Info</Link></li>
             </ul>
