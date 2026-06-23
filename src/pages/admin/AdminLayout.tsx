@@ -22,12 +22,22 @@ const AdminLayout = () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user) { setRole(null); setIsLoading(false); return; }
-      const { data } = await supabase
-        .from("user_roles").select("role").eq("user_id", session.user.id);
-      const roles = (data || []).map(r => r.role);
-      if (roles.includes("admin")) setRole("admin");
-      else if (roles.includes("staff")) setRole("staff");
-      else setRole(null);
+      // Defense-in-depth: verify role server-side via SECURITY DEFINER RPC
+      // rather than trusting a client-side row lookup that could be tampered
+      // with via DevTools. RLS still enforces data-level protection.
+      const { data: isAdmin } = await supabase.rpc("has_role", {
+        _user_id: session.user.id,
+        _role: "admin",
+      });
+      if (isAdmin) {
+        setRole("admin");
+      } else {
+        const { data: isStaff } = await supabase.rpc("has_role", {
+          _user_id: session.user.id,
+          _role: "staff",
+        });
+        setRole(isStaff ? "staff" : null);
+      }
     } catch {
       setRole(null);
     } finally {

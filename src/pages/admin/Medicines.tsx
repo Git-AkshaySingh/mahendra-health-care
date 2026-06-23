@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,34 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+
+const medicineSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(200),
+  description: z.string().trim().max(2000).optional().or(z.literal("")),
+  price: z
+    .number({ invalid_type_error: "Price must be a number" })
+    .finite()
+    .positive("Price must be greater than 0")
+    .max(999999.99, "Price is too large"),
+  stock_quantity: z
+    .number({ invalid_type_error: "Stock must be a number" })
+    .int("Stock must be a whole number")
+    .min(0, "Stock cannot be negative")
+    .max(999999, "Stock is too large"),
+  category_id: z.string().uuid().optional().or(z.literal("")),
+  manufacturer: z.string().trim().max(200).optional().or(z.literal("")),
+  active_ingredients: z.string().trim().max(500).optional().or(z.literal("")),
+  dosage_form: z.string().trim().max(100).optional().or(z.literal("")),
+  strength: z.string().trim().max(100).optional().or(z.literal("")),
+  requires_prescription: z.boolean(),
+  image_url: z
+    .string()
+    .trim()
+    .max(500)
+    .url("Image URL must be a valid URL")
+    .optional()
+    .or(z.literal("")),
+});
 
 const Medicines = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -116,11 +145,23 @@ const Medicines = () => {
   };
 
   const handleSubmit = () => {
-    const data = {
+    const parsed = medicineSchema.safeParse({
       ...formData,
       price: parseFloat(formData.price),
       stock_quantity: parseInt(formData.stock_quantity),
-    };
+    });
+
+    if (!parsed.success) {
+      const first = parsed.error.errors[0];
+      toast({
+        title: "Invalid input",
+        description: first?.message ?? "Please check the form values",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const data = parsed.data;
 
     if (editingMedicine) {
       updateMutation.mutate({ id: editingMedicine.id, data });
